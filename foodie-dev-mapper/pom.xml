@@ -13,7 +13,7 @@
     <dependencies>
         <dependency>
             <groupId>com.imooc</groupId>
-            <artifactId>foodie-dev-mapper</artifactId>
+            <artifactId>foodie-dev-pojo</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
     </dependencies>
