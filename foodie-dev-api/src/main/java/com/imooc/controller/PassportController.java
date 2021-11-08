@@ -3,7 +3,9 @@ package com.imooc.controller;
 import com.imooc.UserService;
 import com.imooc.pojo.Users;
 import com.imooc.pojo.bo.UserBO;
+import com.imooc.utils.CookieUtils;
 import com.imooc.utils.IMOOCJSONResult;
+import com.imooc.utils.JsonUtils;
 import com.imooc.utils.MD5Utils;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -11,6 +13,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Author Mengdexin
@@ -39,7 +44,9 @@ public class PassportController {
 
     @PostMapping(value = "regist")
     @ApiOperation(value = "用户注册", notes = "传入数据")
-    public IMOOCJSONResult regist(@Validated @RequestBody UserBO userBO){
+    public IMOOCJSONResult regist(@Validated @RequestBody UserBO userBO,
+                                  HttpServletRequest request,
+                                  HttpServletResponse response){
         if(!userBO.getConfirmPassword().equals(userBO.getPassword())){
             return IMOOCJSONResult.errorMsg("密码和确认密码不一致！");
         }
@@ -50,16 +57,19 @@ public class PassportController {
         if(userBO.getPassword().length() < 6){
             return IMOOCJSONResult.errorMsg("密码的长度不能少于六位");
         }
-        Users user = userService.createUser(userBO);
-        if(user == null){
+        Users users = userService.createUser(userBO);
+        if(users == null){
             return IMOOCJSONResult.errorMsg("用户注册失败");
         }
-        return IMOOCJSONResult.ok(user);
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(users), true);
+        return IMOOCJSONResult.ok(users);
     }
 
     @PostMapping(value = "login")
     @ApiOperation(value = "用户登录", notes = "传入对象", httpMethod = "POST")
-    public IMOOCJSONResult login(@RequestBody UserBO userBO){
+    public IMOOCJSONResult login(@RequestBody UserBO userBO,
+                                 HttpServletRequest request,
+                                 HttpServletResponse response){
         if(StringUtils.isBlank(userBO.getUsername())
                 || StringUtils.isBlank(userBO.getPassword())){
             return IMOOCJSONResult.errorMsg("用户名和密码不能为空");
@@ -73,7 +83,8 @@ public class PassportController {
         if(users == null){
             return IMOOCJSONResult.errorMsg("用户不存在");
         }
-        return IMOOCJSONResult.ok();
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(users), true);
+        return IMOOCJSONResult.ok(users);
     }
 
 }
