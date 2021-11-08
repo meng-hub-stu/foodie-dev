@@ -1,4 +1,4 @@
-package com.imooc.Controller;
+package com.imooc.controller;
 
 import com.imooc.StuService;
 import com.imooc.pojo.Stu;

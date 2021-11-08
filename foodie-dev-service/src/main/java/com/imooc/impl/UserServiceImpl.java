@@ -7,12 +7,15 @@ import com.imooc.pojo.Users;
 import com.imooc.pojo.bo.UserBO;
 import com.imooc.utils.DateUtil;
 import com.imooc.utils.MD5Utils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
+
+import java.util.Date;
 
 /**
  * @Author Mengdexin
@@ -30,7 +33,7 @@ public class UserServiceImpl implements UserService {
     private Sid sid;
 
     @Override
-    @Transactional(propagation = Propagation.SUPPORTS,rollbackFor = Exception.class)
+    @Transactional(propagation = Propagation.SUPPORTS)
     public boolean queryUsernameIsExist(String userName) {
         Example userExample = new Example(Users.class);
         Example.Criteria userCriteria = userExample.createCriteria();
@@ -46,7 +49,7 @@ public class UserServiceImpl implements UserService {
         user.setUsername(userBO.getUsername());
         user.setPassword(userBO.getPassword());
         try {
-            user.setNickname(MD5Utils.getMD5Str(userBO.getUsername()));
+            user.setPassword(MD5Utils.getMD5Str(userBO.getPassword()));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -54,7 +57,21 @@ public class UserServiceImpl implements UserService {
         user.setBirthday(DateUtil.stringToDate("1901-01-01"));
         user.setId(sid.nextShort());
         user.setSex(Sex.secret.type);
-        usersMapper.insert(user);
-        return null;
+        user.setCreatedTime(new Date());
+        user.setUpdatedTime(new Date());
+        user.setNickname(userBO.getUsername());
+        int num = usersMapper.insert(user);
+        return num > 0 ? user : null;
     }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public Users userLogin(String username, String password) {
+        Example userExample = new Example(Users.class);
+        Example.Criteria userCriteria = userExample.createCriteria();
+        userCriteria.andEqualTo("username", username);
+        userCriteria.andEqualTo("password", password);
+        return usersMapper.selectOneByExample(userExample);
+    }
+
 }

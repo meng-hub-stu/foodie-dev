@@ -13,13 +13,21 @@ public interface UserService {
      * @param userName 用户名
      * @return 返回结果
      */
-   public boolean queryUsernameIsExist(String userName);
+   boolean queryUsernameIsExist(String userName);
 
     /**
      * 创建用户
       * @param userBO
      * @return
      */
-   public Users createUser(UserBO userBO);
+   Users createUser(UserBO userBO);
+
+    /**
+     * 登录
+     * @param username 用户名
+     * @param password 密码
+     * @return 返回用户
+     */
+   Users userLogin(String username, String password);
 
 }

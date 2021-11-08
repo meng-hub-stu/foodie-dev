@@ -1,13 +1,11 @@
-package com.imooc.Controller;
+package com.imooc.controller;
 
 import com.imooc.mapper.StuMapper;
-import org.apache.catalina.User;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 
-import java.awt.*;
 import java.io.InputStream;
 
 /**
