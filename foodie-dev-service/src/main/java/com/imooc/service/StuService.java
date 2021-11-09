@@ -1,4 +1,4 @@
-package com.imooc;
+package com.imooc.service;
 
 import com.imooc.pojo.Stu;
 

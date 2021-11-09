@@ -1,6 +1,6 @@
 package com.imooc.controller;
 
-import com.imooc.StuService;
+import com.imooc.service.StuService;
 import com.imooc.pojo.Stu;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

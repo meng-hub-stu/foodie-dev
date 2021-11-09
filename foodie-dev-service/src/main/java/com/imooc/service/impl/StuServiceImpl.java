@@ -1,6 +1,6 @@
-package com.imooc.impl;
+package com.imooc.service.impl;
 
-import com.imooc.StuService;
+import com.imooc.service.StuService;
 import com.imooc.mapper.StuMapper;
 import com.imooc.pojo.Stu;
 import org.springframework.beans.factory.annotation.Autowired;

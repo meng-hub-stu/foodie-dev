@@ -1,13 +1,12 @@
-package com.imooc.impl;
+package com.imooc.service.impl;
 
-import com.imooc.UserService;
+import com.imooc.service.UserService;
 import com.imooc.enums.Sex;
 import com.imooc.mapper.UsersMapper;
 import com.imooc.pojo.Users;
 import com.imooc.pojo.bo.UserBO;
 import com.imooc.utils.DateUtil;
 import com.imooc.utils.MD5Utils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
