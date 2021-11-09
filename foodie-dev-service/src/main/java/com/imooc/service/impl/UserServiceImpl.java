@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
     private Sid sid;
 
     @Override
-    @Transactional(propagation = Propagation.SUPPORTS)
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     public boolean queryUsernameIsExist(String userName) {
         Example userExample = new Example(Users.class);
         Example.Criteria userCriteria = userExample.createCriteria();
