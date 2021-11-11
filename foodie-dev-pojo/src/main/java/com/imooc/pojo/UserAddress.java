@@ -5,6 +5,13 @@ import java.util.Date;
 
 @Table(name = "user_address")
 public class UserAddress {
+    public UserAddress() {
+    }
+
+    public UserAddress(String userId) {
+        this.userId = userId;
+    }
+
     /**
      * 地址主键id
      */

@@ -15,4 +15,5 @@ public interface CarouselService {
      * @return 返回结果
      */
     List<Carousel> queryAll(Integer isShow);
+
 }

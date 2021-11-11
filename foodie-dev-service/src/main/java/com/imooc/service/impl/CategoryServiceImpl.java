@@ -4,12 +4,17 @@ import com.imooc.mapper.CategoryCustomMapper;
 import com.imooc.mapper.CategoryMapper;
 import com.imooc.pojo.Category;
 import com.imooc.pojo.vo.CategoryVO;
+import com.imooc.pojo.vo.NewItemVO;
 import com.imooc.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 商品分类
@@ -26,6 +31,7 @@ public class CategoryServiceImpl implements CategoryService {
     private CategoryCustomMapper categoryCustomMapper;
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     public List<Category> queryAllRootLevelCat() {
         Example example = new Example(Category.class);
         Example.Criteria criteria = example.createCriteria();
@@ -34,7 +40,17 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
     public List<CategoryVO> querySubCat(Integer rootId) {
         return categoryCustomMapper.getSubCatList(rootId);
     }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+    public List<NewItemVO> getSixNewItemsLazy(Integer rootCatId) {
+        Map<String, Object> map = new HashMap<>(2);
+        map.put("rootCatId", rootCatId);
+        return categoryCustomMapper.getSixNewItemsLazy(map);
+    }
+
 }

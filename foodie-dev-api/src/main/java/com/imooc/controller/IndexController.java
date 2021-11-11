@@ -54,4 +54,11 @@ public class IndexController {
          return IMOOCJSONResult.ok(categoryService.querySubCat(rootCatId));
     }
 
+    @GetMapping(value = "sixNewItems/{rootCatId}")
+    @ApiOperation(value = "一级商品分类关联的商品", notes = "传入一级的id", httpMethod = "GET")
+    public IMOOCJSONResult getSixNewItemsLazy(@ApiParam(value = "一级分类的id", name = "rootCatId", required = true)
+                                              @PathVariable(value = "rootCatId") Integer rootCatId){
+        return IMOOCJSONResult.ok(categoryService.getSixNewItemsLazy(rootCatId));
+    }
+
 }

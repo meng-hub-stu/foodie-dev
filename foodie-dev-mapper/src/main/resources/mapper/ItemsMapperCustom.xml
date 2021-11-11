@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.imooc.mapper.ItemsMapperCustom" >
+  <resultMap id="BaseResultMap" type="com.imooc.pojo.Items" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" property="id" jdbcType="VARCHAR" />
+    <result column="item_name" property="itemName" jdbcType="VARCHAR" />
+    <result column="cat_id" property="catId" jdbcType="INTEGER" />
+    <result column="root_cat_id" property="rootCatId" jdbcType="INTEGER" />
+    <result column="sell_counts" property="sellCounts" jdbcType="INTEGER" />
+    <result column="on_off_status" property="onOffStatus" jdbcType="INTEGER" />
+    <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+    <result column="updated_time" property="updatedTime" jdbcType="TIMESTAMP" />
+    <result column="content" property="content" jdbcType="LONGVARCHAR" />
+  </resultMap>
+<!--  商品评价分页-->
+  <select id="queryCommentByPage" parameterType="Map" resultType="com.imooc.pojo.vo.ItemCommentVO">
+    select
+      ic.comment_level as commentLevel,
+      ic.content as content,
+      ic.sepc_name as specName,
+      ic.created_time as createdTime,
+      u.face as userFace,
+      u.nickname as nickname
+    from items_comments ic
+    left join users u on ic.user_id = u.id
+    where ic.item_id = #{param.itemId}
+    <if test="param.commentLevel != null and param.commentLevel != ''">
+        and ic.comment_level = #{param.commentLevel}
+    </if>
+  </select>
+<!--  搜索商品-->
+  <select id="searchItems" parameterType="Map" resultType="com.imooc.pojo.vo.SearchItemsVO" >
+    select
+      i.id as itemId,
+      i.item_name as itemName,
+      i.sell_counts as sellCounts,
+      ii.url as imgUrl,
+      temp_spec.price_discount as price
+    from items i
+    left join items_img ii on i.id = ii.item_id
+    left join (select item_id, MIN(price_discount) price_discount from items_spec group by item_id) temp_spec
+    on i.id = temp_spec.item_id
+    where ii.is_main = 1
+        <if test="param.keywords != null and param.keywords != ''">
+          and i.item_name like concat('%', #{param.keywords}, '%')
+        </if>
+        order by
+        <choose>
+            <when test="param.sort == &quot;c&quot;">
+                i.sell_counts desc
+            </when>
+            <when test="param.sort == &quot;p&quot;">
+                temp_spec.price_discount asc
+            </when>
+            <otherwise>
+                i.item_name asc
+            </otherwise>
+        </choose>
+  </select>
+<!--    刷新商品的规格-->
+  <select id="queryItemsBySpecIds" parameterType="List" resultType="com.imooc.pojo.vo.ShopcartVO">
+      select
+        t_items.id as itemId,
+        t_items.item_name as itemName,
+        t_items_img.url as itemImgUrl,
+        t_items_spec.id as specId,
+        t_items_spec.`name` as specName,
+        t_items_spec.price_discount as priceDiscount,
+        t_items_spec.price_normal as priceNormal
+      from items_spec t_items_spec
+      left join items t_items on  t_items.id = t_items_spec.item_id
+      left join items_img t_items_img on t_items.id = t_items_img.item_id
+      where t_items_img.is_main = 1
+      and t_items_spec.id in
+      <foreach collection="param" index="index" item="specId" open="(" close=")" separator=",">
+        #{specId}
+      </foreach>
+
+  </select>
+<!--    创建订单-->
+   <update id="decreaseItemSpecStork">
+       update
+            items_spec
+       set
+          stock = stock - #{pendingCounts}
+       where
+            id = #{specId}
+            and stock >= #{pendingCounts};
+   </update>
+
+</mapper>

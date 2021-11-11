@@ -23,7 +23,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 @RestController
 @RequestMapping("passport")
-@Api(value = "用户管理模块", tags = {"用户管理模块"})
+@Api(value = "用户管理模块", tags = {"用户管理模块相关接口"})
 public class PassportController {
 
     @Autowired

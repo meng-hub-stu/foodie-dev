@@ -2,6 +2,7 @@ package com.imooc.service;
 
 import com.imooc.pojo.Category;
 import com.imooc.pojo.vo.CategoryVO;
+import com.imooc.pojo.vo.NewItemVO;
 
 import java.util.List;
 /**
@@ -22,4 +23,12 @@ public interface CategoryService {
      * @return 返回结果
      */
     List<CategoryVO> querySubCat(Integer rootId);
+
+    /**
+     * 查询每一个一级分类下的商品
+     * @param rootCatId 一级分类的id
+     * @return 返回结果
+     */
+    List<NewItemVO> getSixNewItemsLazy(Integer rootCatId);
+
 }

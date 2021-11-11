@@ -5,6 +5,11 @@ import java.util.Date;
 
 @Table(name = "items_comments")
 public class ItemsComments {
+    public ItemsComments(String itemId, Integer commentLevel) {
+        this.itemId = itemId;
+        this.commentLevel = commentLevel;
+    }
+
     /**
      * id主键
      */

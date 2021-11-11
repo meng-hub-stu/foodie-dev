@@ -1,6 +1,7 @@
 package com.imooc.service;
 
 import com.imooc.pojo.Stu;
+import com.imooc.utils.PagedGridResult;
 
 /**
  * @Author Mengdexin
@@ -14,5 +15,13 @@ public interface StuService {
      * @return
      */
    Stu getStu(Integer id);
+
+    /**
+     * 分页获取数据
+     * @param page 页码
+     * @param row 行数
+     * @return 返回结果
+     */
+    PagedGridResult getPageList(Integer page, Integer row);
 
 }
