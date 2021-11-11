@@ -15,11 +15,11 @@ import javax.servlet.http.HttpServletResponse;
  * @date 2021/11/11
  */
 @RestController
-@RequestMapping(value = "shopcat")
+@RequestMapping(value = "shopcart")
 @Api(value = "购物车管理", tags = {"购物车相关接口"})
 public class ShopcatController {
 
-    @PostMapping
+    @PostMapping(value = "add")
     @ApiOperation(value = "添加购物车", notes = "用户数据和商品数据", httpMethod = "POST")
     public IMOOCJSONResult add(
             @RequestParam(value = "userId") String userId,
@@ -28,11 +28,12 @@ public class ShopcatController {
             HttpServletResponse response
 
     ) {
-        //前端用户再登录的情况下，将购物车的数据放在redis中
+        System.out.println(shopcartBO);
+        // TODO 前端用户在登录的情况下，将购物车的数据同步放在redis中
         return IMOOCJSONResult.ok();
     }
 
-    @DeleteMapping
+    @PostMapping(value = "del")
     @ApiOperation(value = "删除购物车的数据", notes = "删除购物车的数据", httpMethod = "DELETE")
     public IMOOCJSONResult del(
             @RequestParam(value = "userId") String userId,
@@ -40,6 +41,7 @@ public class ShopcatController {
             HttpServletRequest request,
             HttpServletResponse response
     ){
+        // TODO 删除redis中的购物车的数据，更新购物车的数据
         return IMOOCJSONResult.ok();
     }
 }

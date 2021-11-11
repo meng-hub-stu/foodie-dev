@@ -79,7 +79,7 @@ public class ItemsController {
     }
 
     @GetMapping(value = "refresh")
-    @ApiOperation(value = "商品规格ids刷新最新的商品", notes = "商品规格的ids", httpMethod = "GET")
+    @ApiOperation(value = "商品规格ids刷新最新的商品-购物车", notes = "商品规格的ids", httpMethod = "GET")
     public IMOOCJSONResult refresh(
             @ApiParam(value = "商品规格id拼接", name = "itemSpecIds", required = true, example = "1001,1002")
             @RequestParam(value = "itemSpecIds") String itemSpecIds

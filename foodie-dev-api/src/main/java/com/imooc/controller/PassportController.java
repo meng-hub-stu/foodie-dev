@@ -62,6 +62,8 @@ public class PassportController {
             return IMOOCJSONResult.errorMsg("用户注册失败");
         }
         CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(users), true);
+        // TODO 生成token，放在redis中
+        // TODO 同步购物车数据
         return IMOOCJSONResult.ok(users);
     }
 

@@ -26,7 +26,7 @@ public class AddressController {
     @Autowired
     private AddressService addressService;
 
-    @GetMapping
+    @PostMapping(value = "list")
     @ApiOperation(value = "用户地址列表", notes = "用户的id", httpMethod = "GET")
     public IMOOCJSONResult list(@RequestParam(value = "userId") String userId){
         List<UserAddress> result = addressService.queryAll(userId);

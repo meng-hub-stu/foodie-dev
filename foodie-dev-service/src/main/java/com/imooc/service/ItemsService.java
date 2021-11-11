@@ -72,7 +72,7 @@ public interface ItemsService {
     PagedGridResult searchItems(String keywords, String sort, Integer page, Integer pageSize);
 
     /**
-     * 刷新商品的规格
+     * 刷新购物车商品的规格
      * @param itemSpecIds 商品规格的id拼接
      * @return 返回商品规格数据
      */

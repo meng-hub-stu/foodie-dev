@@ -1,6 +1,7 @@
 package com.imooc.pojo.vo;
 
 /**
+ * 购物车中的数据
  * @author Mengdl
  * @date 2021/11/11
  */
