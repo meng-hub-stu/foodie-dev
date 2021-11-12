@@ -62,7 +62,7 @@ public class AddressServiceImpl implements AddressService {
         BeanUtils.copyProperties(addressBO, userAddress);
         userAddress.setId(addressBO.getAddressId());
         userAddress.setUpdatedTime(new Date());
-        userAddressMapper.updateByPrimaryKey(userAddress);
+        userAddressMapper.updateByPrimaryKeySelective(userAddress);
     }
 
     @Override

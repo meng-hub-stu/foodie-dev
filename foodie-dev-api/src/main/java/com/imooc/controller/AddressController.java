@@ -20,7 +20,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping(value = "address")
-@Api(value = "地址管理", tags = {"地址相关接口"})
+@Api(value = "地址管理", tags = {"用户地址相关接口"})
 public class AddressController {
 
     @Autowired
@@ -33,13 +33,13 @@ public class AddressController {
         return IMOOCJSONResult.ok(result);
     }
 
-    @PostMapping
+    @PostMapping(value = "add")
     @ApiOperation(value = "用户新增地址", notes = "用户数据和地址信息", httpMethod = "POST")
     public IMOOCJSONResult add(@Valid @RequestBody AddressBO addressBO){
         return IMOOCJSONResult.ok(addressService.addNewUserAddress(addressBO));
     }
 
-    @PutMapping
+    @PostMapping(value = "update")
     @ApiOperation(value = "修改地址", notes = "修改地址", httpMethod = "PUT")
     public IMOOCJSONResult update(@Valid @RequestBody AddressBO addressBO){
         if(StringUtils.isBlank(addressBO.getAddressId())){
@@ -49,7 +49,7 @@ public class AddressController {
         return IMOOCJSONResult.ok();
     }
 
-    @DeleteMapping
+    @PostMapping(value = "delete")
     @ApiOperation(value = "删除地址", notes = "删除地址", httpMethod = "DELETE")
     public IMOOCJSONResult delete(@RequestParam(value = "userId") String userId,
                                   @RequestParam(value = "addressId") String addressId){
@@ -57,8 +57,8 @@ public class AddressController {
         return IMOOCJSONResult.ok();
     }
 
-    @PutMapping(value = "ee")
-    @ApiOperation(value = "设置默认地址")
+    @PostMapping(value = "setDefalut")
+    @ApiOperation(value = "设置默认地址", notes = "设置默认地址", httpMethod = "POST")
     public IMOOCJSONResult update(@RequestParam(value = "userId") String userId,
                                   @RequestParam(value = "addressId") String addressId){
         addressService.updateUserAddress(userId, addressId);
