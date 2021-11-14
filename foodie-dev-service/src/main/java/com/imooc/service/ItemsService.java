@@ -79,10 +79,24 @@ public interface ItemsService {
     List<ShopcartVO> queryItemsBySpecIds(String itemSpecIds);
 
     /**
-     * 创建订单
+     * 创建订单减少库存
      * @param specId 商品规格id
      * @param buyCounts 减去的数量
      */
     void decreaseItemSpecStork(String specId, int buyCounts);
+
+    /**
+     * 查询商品的规格数据
+     * @param itemSpecId 规格id
+     * @return 对象数据
+     */
+    ItemsSpec queryItemSpecById(String itemSpecId);
+
+    /**
+     * 获取商品的照片
+     * @param itemId 商品id
+     * @return 商品照片数据
+     */
+    ItemsImg queryItemImageByItemId(String itemId);
 
 }

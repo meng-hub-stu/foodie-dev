@@ -40,9 +40,9 @@ public interface ItemsMapperCustom {
     /**
      * 创建订单
      * @param specId 商品规格id
-     * @param buyCounts 购买的数量
+     * @param pendingCounts 购买的数量
      * @return 返回结果
      */
-    int decreaseItemSpecStork(String specId, int buyCounts);
+    int decreaseItemSpecStork(@Param("specId") String specId, @Param("pendingCounts") int pendingCounts);
 
 }
