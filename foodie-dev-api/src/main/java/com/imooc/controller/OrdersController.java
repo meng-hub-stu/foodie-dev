@@ -91,4 +91,10 @@ public class OrdersController extends BaseController {
         return HttpStatus.OK.value();
     }
 
+    @PostMapping(value = "getPaidOrderInfo")
+    @ApiOperation(value = "前端轮询获取订单的支付状态", notes = "前端轮询获取订单的支付状态", httpMethod = "POST")
+    public IMOOCJSONResult getPaidOrderInfo(@RequestParam(value = "orderId") String orderId){
+        return IMOOCJSONResult.ok(orderService.queryOrderStatus(orderId));
+    }
+
 }

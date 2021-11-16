@@ -12,6 +12,7 @@ import com.imooc.pojo.vo.OrderVO;
 import com.imooc.service.AddressService;
 import com.imooc.service.ItemsService;
 import com.imooc.service.OrderService;
+import com.imooc.utils.DateUtil;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 订单实现类
@@ -152,5 +155,25 @@ public class OrderServiceImpl implements OrderService {
         orderStatus.setPayTime(new Date());
         orderStatus.setOrderStatus(type);
         orderStatusMapper.updateByPrimaryKey(orderStatus);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS, rollbackFor = Exception.class)
+    public OrderStatus queryOrderStatus(String orderId) {
+        return orderStatusMapper.selectByPrimaryKey(orderId);
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    public void autoCloseOrder() {
+        OrderStatus orderStatus = new OrderStatus();
+        orderStatus.setOrderStatus(OrderStatusEnum.WAIT_PAY.type);
+        List<OrderStatus> orderStatuses = orderStatusMapper.select(orderStatus);
+        List<OrderStatus> orderResult = orderStatuses.stream().filter(v -> DateUtil.daysBetween(v.getCreatedTime(), DateUtil.getCurrentDateTime()) > 1).collect(Collectors.toList());
+        orderResult.forEach(v ->{
+            v.setOrderStatus(OrderStatusEnum.CLOSE.type);
+            v.setCloseTime(DateUtil.getCurrentDateTime());
+            orderStatusMapper.updateByPrimaryKey(v);
+        });
     }
 }

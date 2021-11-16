@@ -1,5 +1,6 @@
 package com.imooc.service;
 
+import com.imooc.pojo.OrderStatus;
 import com.imooc.pojo.bo.OrderBO;
 import com.imooc.pojo.vo.OrderVO;
 
@@ -34,5 +35,17 @@ public interface OrderService {
      * @param type 修改的状态
      */
     void notifyMerchantOrderPaid(String merchantOrderId, Integer type);
+
+    /**
+     * 查询订单的状态
+     * @param orderId 订单的id
+     * @return 返回结果对象
+     */
+    OrderStatus queryOrderStatus(String orderId);
+
+    /**
+     * 自动关闭订单
+     */
+    void autoCloseOrder();
 
 }
