@@ -1,4 +1,4 @@
-package com.imooc.pay.entity.wx;
+package com.imooc.controller.pay.entity.wx;
 
 /**
  * 统一下单

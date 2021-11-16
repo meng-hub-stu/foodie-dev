@@ -1,8 +1,8 @@
-package com.imooc.controller;
+package com.imooc.controller.pay.controller;
 
-import com.imooc.pay.entity.PaymentInfoVO;
-import com.imooc.pay.entity.wx.PreOrderResult;
-import com.imooc.pay.service.PayOrderService;
+import com.imooc.controller.pay.entity.PaymentInfoVO;
+import com.imooc.controller.pay.entity.wx.PreOrderResult;
+import com.imooc.controller.pay.service.PayOrderService;
 import com.imooc.utils.IMOOCJSONResult;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;

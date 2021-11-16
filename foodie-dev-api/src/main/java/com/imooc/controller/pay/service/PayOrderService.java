@@ -1,6 +1,6 @@
-package com.imooc.pay.service;
+package com.imooc.controller.pay.service;
 
-import com.imooc.pay.entity.wx.PreOrderResult;
+import com.imooc.controller.pay.entity.wx.PreOrderResult;
 
 /**
  * 支付接口

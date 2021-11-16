@@ -1,4 +1,4 @@
-package com.imooc.pay.entity;
+package com.imooc.controller.pay.entity;
 
 public class PaymentInfoVO {
 

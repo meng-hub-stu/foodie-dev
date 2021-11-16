@@ -1,6 +1,4 @@
-package com.imooc.pay.utils;
-
-import com.imooc.utils.MD5Utils;
+package com.imooc.controller.pay.utils;
 
 import java.util.Iterator;
 import java.util.Map;

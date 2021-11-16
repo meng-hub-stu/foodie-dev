@@ -1,4 +1,4 @@
-package com.imooc.pay.utils;
+package com.imooc.controller.pay.utils;
 
 import java.security.MessageDigest;
 

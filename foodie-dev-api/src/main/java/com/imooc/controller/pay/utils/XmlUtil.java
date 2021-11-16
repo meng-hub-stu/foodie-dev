@@ -1,4 +1,4 @@
-package com.imooc.pay.utils;
+package com.imooc.controller.pay.utils;
 
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.DomDriver;
