@@ -2,6 +2,8 @@ package com.imooc.controller;
 
 import org.springframework.stereotype.Controller;
 
+import java.io.File;
+
 /**
  * @Author Mengdexin
  * @date 2021 -11 -14 -20:57
@@ -21,5 +23,12 @@ public class BaseController {
      * 支付中心的回调地址
      */
     public static final String PAY_RETURN_URL = "http://z399vh.natappfree.cc/orders/notifyMerchantOrderPaid";
+    /**
+     * 人员头像的路径
+     */
+    public static final String FILE_USER_FACE_URL = File.separator + "workspace"
+                                                    + File.separator + "images"
+                                                    + File.separator + "fooide"
+                                                    + File.separator + "face";
 
 }
