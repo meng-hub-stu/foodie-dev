@@ -2,6 +2,7 @@ package com.imooc.service.center;
 
 import com.imooc.pojo.Users;
 import com.imooc.pojo.bo.center.CenterUserBO;
+import com.imooc.pojo.vo.center.OrderStatusCountVO;
 
 /**
  * @Author Mengdexin
@@ -22,5 +23,12 @@ public interface CenterService {
      * @return 用户信息
      */
     Users updateUserInfo(String userId, CenterUserBO centerUserBO);
+
+    /**
+     * 查询个人订单的数量
+     * @return 返回结果对象
+     * @param userId 用户id
+     */
+    OrderStatusCountVO queryUserOrdersStatusCounts(String userId);
 
 }

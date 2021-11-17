@@ -20,7 +20,7 @@ public class OrderJob {
     /**
      * ps 定时器进行全表扫描数据库，不好，以后可以用rabbitmq进行延时任务处理机制。
      */
-    @Scheduled(cron = "0 0 0/1 * * ?")
+//    @Scheduled(cron = "0 0 0/1 * * ?")
     public void autoCloseOrder(){
         System.out.println("执行定时任务，执行时间" + DateUtil.getCurrentDateString(DateUtil.DATETIME_PATTERN));
         orderService.autoCloseOrder();
