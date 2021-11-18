@@ -67,4 +67,15 @@ public class CenterServiceImpl implements CenterService {
         OrderStatusCountVO result = new OrderStatusCountVO();
         return null;
     }
+
+    @Override
+    public Users updateUserFace(String userId, String userFaceUrl) {
+        Users users = new Users();
+        users.setId(userId);
+        users.setUpdatedTime(new Date());
+        users.setFace(userFaceUrl);
+        usersMapper.updateByPrimaryKeySelective(users);
+        return queryUserInfo(userId);
+    }
+
 }

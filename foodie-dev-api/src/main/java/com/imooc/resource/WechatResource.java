@@ -1,4 +1,4 @@
-package com.imooc.config;
+package com.imooc.resource;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.PropertySource;

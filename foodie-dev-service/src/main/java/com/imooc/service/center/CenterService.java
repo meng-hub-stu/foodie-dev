@@ -31,4 +31,13 @@ public interface CenterService {
      */
     OrderStatusCountVO queryUserOrdersStatusCounts(String userId);
 
+    /**
+     * 更新用户的头像
+     *
+     * @param userId 用户id
+     * @param userFaceUrl 用户头像路径
+     * @return 返回对象
+     */
+    Users updateUserFace(String userId, String userFaceUrl);
+
 }
