@@ -1,6 +1,6 @@
 package com.imooc.controller.center;
 
-import com.imooc.service.center.CenterService;
+import com.imooc.service.center.CenterUserService;
 import com.imooc.utils.IMOOCJSONResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,13 +19,13 @@ import org.springframework.web.bind.annotation.*;
 public class CenterController {
 
     @Autowired
-    private CenterService centerService;
+    private CenterUserService centerUserService;
 
     @GetMapping(value = "userInfo")
     @ApiOperation(value = "查询用户信息", notes = "查询用户信息", httpMethod = "GET")
-    public IMOOCJSONResult detail(@ApiParam(value = "userId", name = "用户id", required = true)
+    public IMOOCJSONResult detail(@ApiParam(name = "userId", value = "用户id", required = true)
                                     @RequestParam String userId){
-        return IMOOCJSONResult.ok(centerService.queryUserInfo(userId));
+        return IMOOCJSONResult.ok(centerUserService.queryUserInfo(userId));
     }
 
 }

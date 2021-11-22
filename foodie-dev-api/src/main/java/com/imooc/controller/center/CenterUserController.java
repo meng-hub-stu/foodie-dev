@@ -4,7 +4,7 @@ import com.imooc.controller.BaseController;
 import com.imooc.pojo.Users;
 import com.imooc.pojo.bo.center.CenterUserBO;
 import com.imooc.resource.FileUploadResource;
-import com.imooc.service.center.CenterService;
+import com.imooc.service.center.CenterUserService;
 import com.imooc.utils.CookieUtils;
 import com.imooc.utils.DateUtil;
 import com.imooc.utils.IMOOCJSONResult;
@@ -40,14 +40,14 @@ import java.util.Map;
 public class CenterUserController extends BaseController {
 
     @Autowired
-    private CenterService centerService;
+    private CenterUserService centerUserService;
 
     @Autowired
     private FileUploadResource fileUploadResource;
 
     @PostMapping(value = "uploadFace")
     @ApiOperation(value = "修改头像", notes = "修改头像", httpMethod = "POST")
-    public IMOOCJSONResult file(@ApiParam(value = "userId",name = "用户id", required = true)
+    public IMOOCJSONResult file(@ApiParam(name = "userId",value = "用户id", required = true)
                                 @RequestParam String userId,
                                 MultipartFile file,
                                 HttpServletRequest request,
@@ -99,7 +99,7 @@ public class CenterUserController extends BaseController {
         }
         String userFaceUrl = fileUploadResource.getFileServerUrl() + uploadPathPrefix
                 + "?t=" + DateUtil.getCurrentDateString(DateUtil.DATE_PATTERN);
-        Users users = centerService.updateUserFace(userId, userFaceUrl);
+        Users users = centerUserService.updateUserFace(userId, userFaceUrl);
         //更新redis
         //TODO 以后再说
         //重新设置cookie
@@ -110,7 +110,7 @@ public class CenterUserController extends BaseController {
 
     @PostMapping(value = "update")
     @ApiOperation(value = "更新用户信息", notes = "更新用户信息", httpMethod = "POST")
-    public IMOOCJSONResult update(@ApiParam(value = "userId", name = "用户id", required = true)
+    public IMOOCJSONResult update(@ApiParam(name = "userId", value = "用户id", required = true)
                                   @RequestParam String userId,
                                   @RequestBody @Valid CenterUserBO centerUserBO,
                                   BindingResult result,
@@ -119,7 +119,7 @@ public class CenterUserController extends BaseController {
         if(result.hasErrors()){
             return IMOOCJSONResult.errorMap(getErrorMap(result));
         }
-        Users usersResult = centerService.updateUserInfo(userId, centerUserBO);
+        Users usersResult = centerUserService.updateUserInfo(userId, centerUserBO);
         //将敏感信息进行清空或者等等
         // TODO 以后会用redis和token等概念
         CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(usersResult), true);

@@ -8,7 +8,7 @@ import com.imooc.pojo.vo.center.OrderStatusCountVO;
  * @Author Mengdexin
  * @date 2021 -11 -16 -22:23
  */
-public interface CenterService {
+public interface CenterUserService {
     /**
      * 查询用户信息
      * @param userId 用户id
@@ -23,13 +23,6 @@ public interface CenterService {
      * @return 用户信息
      */
     Users updateUserInfo(String userId, CenterUserBO centerUserBO);
-
-    /**
-     * 查询个人订单的数量
-     * @return 返回结果对象
-     * @param userId 用户id
-     */
-    OrderStatusCountVO queryUserOrdersStatusCounts(String userId);
 
     /**
      * 更新用户的头像

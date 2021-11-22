@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.imooc.mapper.OrdersMapperCustom">
+    <resultMap id="BaseResultMap" type="com.imooc.pojo.Carousel">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="image_url" property="imageUrl" jdbcType="VARCHAR"/>
+        <result column="background_color" property="backgroundColor" jdbcType="VARCHAR"/>
+        <result column="item_id" property="itemId" jdbcType="VARCHAR"/>
+        <result column="cat_id" property="catId" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="INTEGER"/>
+        <result column="sort" property="sort" jdbcType="INTEGER"/>
+        <result column="is_show" property="isShow" jdbcType="INTEGER"/>
+        <result column="create_time" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="update_time" property="updateTime" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <select id="getMyOrderStatusCounts" resultType="integer">
+    select
+        count(1)
+    from orders o
+        inner join order_status s on o.id = s.order_id
+    where
+        o.user_id = #{userId}
+        and s.order_status = #{type}
+        <if test="comment != null">
+            and o.is_comment = #{comment}
+        </if>
+  </select>
+
+    <resultMap id="selectOrderData" type="com.imooc.pojo.vo.center.MyOrderVO">
+        <id column="orderId" property="orderId" jdbcType="VARCHAR" />
+        <result column="createdTime" property="createdTime" jdbcType="TIME" />
+        <result column="payMethod" property="payMethod" jdbcType="INTEGER" />
+        <result column="realPayAmount" property="realPayAmount" jdbcType="INTEGER" />
+        <result column="postAmount" property="postAmount" jdbcType="INTEGER" />
+        <result column="orderStatus" property="orderStatus" jdbcType="INTEGER" />
+        <result column="isComment" property="isComment" jdbcType="INTEGER" />
+
+        <collection property="subOrderItemList"
+                    select="subItmes"
+                    column="orderId"
+                    ofType="com.imooc.pojo.vo.center.MySubOrderItemVO">
+            <id column="itemId" property="itemId" jdbcType="VARCHAR"/>
+            <result column="itemName" property="itemName" jdbcType="VARCHAR"/>
+            <result column="itemImg" property="itemImg" jdbcType="VARCHAR"/>
+            <result column="itemSpecId" property="itemSpecId" jdbcType="VARCHAR"/>
+            <result column="itemSpecName" property="itemSpecName" jdbcType="VARCHAR"/>
+            <result column="buyCounts" property="buyCounts" jdbcType="INTEGER"/>
+            <result column="price" property="price" jdbcType="INTEGER"/>
+        </collection>
+    </resultMap>
+    <select id="subItmes" parameterType="string" resultType="com.imooc.pojo.vo.center.MySubOrderItemVO">
+        select
+            oi.item_id as itemId,
+            oi.item_name as itemName,
+            oi.item_img as itemImg,
+            oi.item_spec_id as itemSpecId,
+            oi.item_spec_name as itemSpecName,
+            oi.buy_counts as buyCounts,
+            oi.price as price
+        from order_items oi
+        where oi.order_id = #{orderId}
+
+    </select>
+
+    <select id="selectOrderData" resultMap="selectOrderData">
+      select
+        od.id as orderId,
+        od.created_time as createdTime,
+        od.pay_method as payMethod,
+        od.real_pay_amount as realPayAmount,
+        od.post_amount as postAmount,
+        od.is_comment as isComment,
+        os.order_status as orderStatus
+      from orders od
+        left join order_status os on  od.id = os.order_id
+      where od.is_delete = 0
+        and od.user_id = #{userId}
+        <if test="orderStatus != null and orderStatus != ''">
+            and os.order_status = #{orderStatus}
+        </if>
+  </select>
+
+    <select id="selectOrderDataDemo" resultMap="selectOrderData">
+        select
+        od.id as orderId,
+        od.created_time as createdTime,
+        od.pay_method as payMethod,
+        od.real_pay_amount as realPayAmount,
+        od.post_amount as postAmount,
+        os.order_status as orderStatus,
+        oi.item_id as itemId,
+        oi.item_name as itemName,
+        oi.item_img as itemImg,
+        oi.item_spec_id as itemSpecId,
+        oi.item_spec_name as itemSpecName,
+        oi.buy_counts as buyCounts,
+        oi.price as price
+        from orders od
+        left join order_status os on  od.id = os.order_id
+        left join order_items oi on od.id = oi.order_id
+        where od.is_delete = 0
+        and od.user_id = #{userId}
+        <if test="orderStatus != null and orderStatus != ''">
+            and os.order_status = #{orderStatus}
+        </if>
+    </select>
+
+    <resultMap id="orderStatusMap" type="com.imooc.pojo.OrderStatus" >
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="order_id" property="orderId" jdbcType="VARCHAR" />
+        <result column="order_status" property="orderStatus" jdbcType="INTEGER" />
+        <result column="created_time" property="createdTime" jdbcType="TIMESTAMP" />
+        <result column="pay_time" property="payTime" jdbcType="TIMESTAMP" />
+        <result column="deliver_time" property="deliverTime" jdbcType="TIMESTAMP" />
+        <result column="success_time" property="successTime" jdbcType="TIMESTAMP" />
+        <result column="close_time" property="closeTime" jdbcType="TIMESTAMP" />
+        <result column="comment_time" property="commentTime" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="quertMyOrdersTrend" resultType="com.imooc.pojo.OrderStatus">
+        select
+            os.*
+        from
+            orders o
+        left join
+            order_status os
+        on  o.id = os.order_id
+        where
+            o.is_delete = 0
+        and
+            o.user_id = #{userId}
+        and
+            os.order_status in (20,30,40)
+        order by
+            os.order_id
+        desc
+    </select>
+
+</mapper>

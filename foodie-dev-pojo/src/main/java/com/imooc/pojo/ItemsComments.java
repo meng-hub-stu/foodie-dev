@@ -10,6 +10,9 @@ public class ItemsComments {
         this.commentLevel = commentLevel;
     }
 
+    public ItemsComments() {
+    }
+
     /**
      * id主键
      */

@@ -1,5 +1,7 @@
 package com.imooc.utils;
 
+import com.github.pagehelper.PageInfo;
+
 import java.util.List;
 
 /**
@@ -40,4 +42,5 @@ public class PagedGridResult {
 	public void setRows(List<?> rows) {
 		this.rows = rows;
 	}
+
 }

@@ -18,7 +18,7 @@ import tk.mybatis.spring.annotation.MapperScan;
 //开启定时器
 @EnableScheduling
 //开启异步处理
-@EnableAsync
+//@EnableAsync
 public class Application {
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);

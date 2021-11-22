@@ -1,5 +1,9 @@
 package com.imooc.controller;
 
+import com.imooc.pojo.Orders;
+import com.imooc.service.center.MyOrdersService;
+import com.imooc.utils.IMOOCJSONResult;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.File;
@@ -20,7 +24,7 @@ public class BaseController {
      */
     public static final String PAY_MERCHANT_URL = "http://payment.t.mukewang.com/foodie-payment/payment/createMerchantOrder";
     /**
-     * 支付中心的回调地址
+     * 支付中心的回调地址，用notapp进行映射的
      */
     public static final String PAY_RETURN_URL = "http://z399vh.natappfree.cc/orders/notifyMerchantOrderPaid";
     /**
@@ -30,5 +34,18 @@ public class BaseController {
                                                     + File.separator + "images"
                                                     + File.separator + "fooide"
                                                     + File.separator + "face";
+
+    @Autowired
+    public MyOrdersService myOrdersService;
+
+    public IMOOCJSONResult checkOrderData(String userId, String orderId){
+        Orders orders = myOrdersService.queryMyOrders(userId, orderId);
+        if(orders == null){
+            return IMOOCJSONResult.errorMsg("没有订单数据");
+        }
+        return IMOOCJSONResult.ok(orders);
+    }
+
+
 
 }
