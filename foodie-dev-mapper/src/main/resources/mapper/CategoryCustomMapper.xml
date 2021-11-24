@@ -62,6 +62,6 @@
             c.type = 1
             and ii.is_main = 1
             and i.root_cat_id = #{param.rootCatId}
-        ORDER BY I.created_time DESC;
+        ORDER BY i.created_time DESC;
     </select>
 </mapper>

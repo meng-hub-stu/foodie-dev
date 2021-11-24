@@ -17,23 +17,23 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
  */
 //@RunWith(SpringRunner.class)
 //@SpringBootTest(classes = Application.class)
-@SpringBootTest
+//@SpringBootTest
 public class TranTest {
-
-    private MockMvc mockMvc;
-
-
-    @Before
-    public void setUp() throws Exception{
-        mockMvc = MockMvcBuilders.standaloneSetup(new HelloController()).build();
-    }
-
-
-    @Test
-    public void getHello() throws Exception{
-        mockMvc.perform(MockMvcRequestBuilders.get("/test")
-                .accept(MediaType.APPLICATION_JSON_UTF8)).andDo(print());
-    }
-
+//
+//    private MockMvc mockMvc;
+//
+//
+//    @Before
+//    public void setUp() throws Exception{
+//        mockMvc = MockMvcBuilders.standaloneSetup(new HelloController()).build();
+//    }
+//
+//
+//    @Test
+//    public void getHello() throws Exception{
+//        mockMvc.perform(MockMvcRequestBuilders.get("/test")
+//                .accept(MediaType.APPLICATION_JSON_UTF8)).andDo(print());
+//    }
+//
 
 }
