@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @ConfigurationProperties(prefix = "file")
-@PropertySource("classpath:file-upload-prod.properties")
+@PropertySource("classpath:file-upload-dev.properties")
 public class FileUploadResource {
 
     private String fileUserFaceUrl;
