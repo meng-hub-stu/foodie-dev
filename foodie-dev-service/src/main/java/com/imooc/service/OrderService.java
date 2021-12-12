@@ -2,7 +2,10 @@ package com.imooc.service;
 
 import com.imooc.pojo.OrderStatus;
 import com.imooc.pojo.bo.OrderBO;
+import com.imooc.pojo.bo.ShopcartBO;
 import com.imooc.pojo.vo.OrderVO;
+
+import java.util.List;
 
 /**
  * 订单相关的接口类
@@ -13,8 +16,9 @@ public interface OrderService {
     /**
      * 创建订单
      * @param orderBO 入参数据
+     * @param shopcartList 购物车数据
      */
-    OrderVO createOrder(OrderBO orderBO);
+    OrderVO createOrder(OrderBO orderBO, List<ShopcartBO> shopcartList);
 
     /**
      *  修改订单

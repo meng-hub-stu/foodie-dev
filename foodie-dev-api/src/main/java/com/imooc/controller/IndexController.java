@@ -5,6 +5,8 @@ import com.imooc.pojo.Carousel;
 import com.imooc.service.CarouselService;
 import com.imooc.service.CategoryService;
 import com.imooc.utils.IMOOCJSONResult;
+import com.imooc.utils.JsonUtils;
+import com.imooc.utils.RedisOperator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 /**
  * 首页展示控制类
  * @Author Mengdexin
@@ -24,7 +28,7 @@ import java.util.List;
 @RequestMapping(value = "index")
 @RestController
 @Api(value = "首页展示", tags = {"首页展示相关的接口"})
-public class IndexController {
+public class IndexController extends BaseController {
 
     @Autowired
     private CarouselService carouselService;
@@ -32,10 +36,25 @@ public class IndexController {
     @Autowired
     private CategoryService categoryService;
 
+    @Autowired
+    private RedisOperator redisOperator;
+
     @GetMapping(value = "carousel")
     @ApiOperation(value = "首页轮播", notes = "传入是否展示参数", httpMethod = "GET")
+//    @Cacheable(value = "carousel"/*, key = "keyName1"*/ ,keyGenerator = "myKeyGenerator")
     public IMOOCJSONResult carousel(){
-        return IMOOCJSONResult.ok(carouselService.queryAll(YesOrNo.YES.type));
+        String redisResult = redisOperator.get(INDEX_CAROUSEL_REDIS_KEY);
+        List<Carousel> result = null;
+        if(isNotBlank(redisResult)){
+            result = JsonUtils.jsonToList(redisResult, Carousel.class);
+        } else {
+            result = carouselService.queryAll(YesOrNo.YES.type);
+            redisOperator.set(INDEX_CAROUSEL_REDIS_KEY, JsonUtils.objectToJson(result));
+        }
+        return IMOOCJSONResult.ok(result);
+//        String aaa = "不走缓存";
+//        System.out.println(aaa);
+//        return IMOOCJSONResult.ok(carouselService.queryAll(YesOrNo.YES.type));
     }
 
     @GetMapping(value = "cats")

@@ -34,6 +34,10 @@ public class BaseController {
                                                     + File.separator + "images"
                                                     + File.separator + "fooide"
                                                     + File.separator + "face";
+    /**
+     * 首页轮播的redis的key
+     */
+    public static final String INDEX_CAROUSEL_REDIS_KEY = "index:carousel:redis:key";
 
     @Autowired
     public MyOrdersService myOrdersService;

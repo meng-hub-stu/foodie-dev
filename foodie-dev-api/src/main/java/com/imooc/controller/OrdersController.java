@@ -2,11 +2,14 @@ package com.imooc.controller;
 
 import com.imooc.enums.OrderStatusEnum;
 import com.imooc.pojo.bo.OrderBO;
+import com.imooc.pojo.bo.ShopcartBO;
 import com.imooc.pojo.vo.MerchantOrderVO;
 import com.imooc.pojo.vo.OrderVO;
 import com.imooc.service.OrderService;
 import com.imooc.utils.CookieUtils;
 import com.imooc.utils.IMOOCJSONResult;
+import com.imooc.utils.JsonUtils;
+import com.imooc.utils.RedisOperator;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -18,6 +21,9 @@ import org.springframework.web.client.RestTemplate;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
  * 订单控制层
@@ -35,6 +41,9 @@ public class OrdersController extends BaseController {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private RedisOperator redisOperator;
+
 
     @PostMapping(value = "create")
     @ApiOperation(value = "创建订单", notes = "订单参数", httpMethod = "POST")
@@ -43,16 +52,23 @@ public class OrdersController extends BaseController {
                                   HttpServletResponse response) {
         System.out.println(orderBO);
         //1.创建订单
-        OrderVO orderVO = orderService.createOrder(orderBO);
+        String shopCatResult = redisOperator.get(FOODIE_SHOPCART + ":" + orderBO.getUserId());
+        if(isBlank(shopCatResult)){
+            return IMOOCJSONResult.errorMsg("购物车数据不正确");
+        }
+        List<ShopcartBO> shopcartList = JsonUtils.jsonToList(shopCatResult, ShopcartBO.class);
+        OrderVO orderVO = orderService.createOrder(orderBO, shopcartList);
         String orderId = orderVO.getOrderId();
         MerchantOrderVO merchantOrderVO = orderVO.getMerchantOrderVO();
         merchantOrderVO.setReturnUrl(PAY_RETURN_URL);
         //测试金额为一分钱
         merchantOrderVO.setAmount(1);
         //2.移除购物车的数据
-        //TODO 移除redis中的数据
+        // 移除redis中的数据
+        shopcartList.removeAll(orderVO.getToBeRemovedShopcatedList());
+        redisOperator.set(FOODIE_SHOPCART + ":" + orderBO.getUserId(), JsonUtils.objectToJson(shopcartList));
         //将前段的购物车
-//        CookieUtils.setCookie(request, response, FOODIE_SHOPCART, "");
+        CookieUtils.setCookie(request, response, FOODIE_SHOPCART, "");
         //3.向支付中心发送当前订单，保存支付中心的订单，创建一个未支付的订单
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON_UTF8);

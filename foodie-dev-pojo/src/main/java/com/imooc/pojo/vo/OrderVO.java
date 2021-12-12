@@ -1,5 +1,8 @@
 package com.imooc.pojo.vo;
 
+import com.imooc.pojo.bo.ShopcartBO;
+import java.util.List;
+
 /**
  * @Author Mengdexin
  * @date 2021 -11 -14 -22:18
@@ -7,6 +10,15 @@ package com.imooc.pojo.vo;
 public class OrderVO {
     private String orderId;
     private MerchantOrderVO merchantOrderVO;
+    private List<ShopcartBO> toBeRemovedShopcatedList;
+
+    public List<ShopcartBO> getToBeRemovedShopcatedList() {
+        return toBeRemovedShopcatedList;
+    }
+
+    public void setToBeRemovedShopcatedList(List<ShopcartBO> toBeRemovedShopcatedList) {
+        this.toBeRemovedShopcatedList = toBeRemovedShopcatedList;
+    }
 
     public String getOrderId() {
         return orderId;

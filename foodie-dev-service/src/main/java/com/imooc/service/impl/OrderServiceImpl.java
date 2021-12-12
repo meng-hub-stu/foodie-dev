@@ -1,5 +1,6 @@
 package com.imooc.service.impl;
 
+import com.google.common.collect.Lists;
 import com.imooc.enums.OrderStatusEnum;
 import com.imooc.enums.YesOrNo;
 import com.imooc.mapper.OrderItemsMapper;
@@ -7,6 +8,7 @@ import com.imooc.mapper.OrderStatusMapper;
 import com.imooc.mapper.OrdersMapper;
 import com.imooc.pojo.*;
 import com.imooc.pojo.bo.OrderBO;
+import com.imooc.pojo.bo.ShopcartBO;
 import com.imooc.pojo.vo.MerchantOrderVO;
 import com.imooc.pojo.vo.OrderVO;
 import com.imooc.service.AddressService;
@@ -60,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    public OrderVO createOrder(OrderBO orderBO) {
+    public OrderVO createOrder(OrderBO orderBO, List<ShopcartBO> shopcartList) {
         String addressId = orderBO.getAddressId();
         String itemSpecIds = orderBO.getItemSpecIds();
         String leftMsg = orderBO.getLeftMsg();
@@ -90,9 +92,15 @@ public class OrderServiceImpl implements OrderService {
         String[] itemSpecIdArr = itemSpecIds.split(",");
         Integer toTalAmount = 0;
         Integer realPayAmount = 0;
+        List<ShopcartBO> toBeRemovedShopcateList = Lists.newArrayList();
         for (String itemSpecId : itemSpecIdArr) {
-            // TODO 后期整合redis，进行查询购买的数量
+            // 后期整合redis，进行查询购买的数量
+            ShopcartBO buyCountsFromShopcart = getBuyCountsFromShopcart(shopcartList, itemSpecId);
             Integer buyCount = 1;
+            if(buyCountsFromShopcart != null){
+                buyCount = buyCountsFromShopcart.getBuyCounts();
+                toBeRemovedShopcateList.add(buyCountsFromShopcart);
+            }
             //获取商品的规格数据
             ItemsSpec itemsSpec = itemsService.queryItemSpecById(itemSpecId);
             toTalAmount += itemsSpec.getPriceNormal() * buyCount;
@@ -135,7 +143,23 @@ public class OrderServiceImpl implements OrderService {
         OrderVO orderVO = new OrderVO();
         orderVO.setOrderId(ordersId);
         orderVO.setMerchantOrderVO(merchantOrderVO);
+        orderVO.setToBeRemovedShopcatedList(toBeRemovedShopcateList);
         return orderVO;
+    }
+
+    /**
+     * 在购物车获取商品的数量
+      * @param shopcartList 购物车
+     * @param itemSpecId 商品规格id
+     * @return
+     */
+    private ShopcartBO getBuyCountsFromShopcart(List<ShopcartBO> shopcartList, String itemSpecId){
+        for (ShopcartBO sc : shopcartList){
+            if(sc.getSpecId().equals(itemSpecId)){
+                return sc;
+            }
+        }
+        return null;
     }
 
     @Override
