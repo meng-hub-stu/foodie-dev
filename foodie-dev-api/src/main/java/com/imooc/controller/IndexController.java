@@ -11,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,6 +66,7 @@ public class IndexController extends BaseController {
 
     @GetMapping(value = "subCat/{rootCatId}")
     @ApiOperation(value = "商品二级和三级的目录", notes = "传入一级分类的id", httpMethod = "GET")
+    @Cacheable(value = "subcat", key = "#rootCatId" /*, keyGenerator = "myKeyGenerator"*/)
     public IMOOCJSONResult categorySubList(@ApiParam(value = "一级分类的id", name = "rootCatId", required = true)
                                            @PathVariable(value = "rootCatId") Integer rootCatId){
          if(rootCatId == null){
@@ -75,6 +77,7 @@ public class IndexController extends BaseController {
 
     @GetMapping(value = "sixNewItems/{rootCatId}")
     @ApiOperation(value = "一级商品分类关联的商品", notes = "传入一级的id", httpMethod = "GET")
+    @Cacheable(value = "sixNewItems" /*, key = "#rootCatId", */ /*keyGenerator = "myKeyGenerator"*/)
     public IMOOCJSONResult getSixNewItemsLazy(@ApiParam(value = "一级分类的id", name = "rootCatId", required = true)
                                               @PathVariable(value = "rootCatId") Integer rootCatId){
         return IMOOCJSONResult.ok(categoryService.getSixNewItemsLazy(rootCatId));
