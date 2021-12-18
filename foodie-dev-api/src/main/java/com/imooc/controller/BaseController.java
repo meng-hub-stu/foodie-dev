@@ -1,12 +1,17 @@
 package com.imooc.controller;
 
 import com.imooc.pojo.Orders;
+import com.imooc.pojo.Users;
+import com.imooc.pojo.vo.UsersVO;
 import com.imooc.service.center.MyOrdersService;
 import com.imooc.utils.IMOOCJSONResult;
+import com.imooc.utils.RedisOperator;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import java.io.File;
+import java.util.UUID;
 
 /**
  * @Author Mengdexin
@@ -15,10 +20,14 @@ import java.io.File;
 @Controller
 public class BaseController {
 
+    @Autowired
+    private RedisOperator redisOperator;
+
     public static final String FOODIE_SHOPCART = "shopcart";
 
     public static final Integer COMMENT_PAGE_SIZE = 10;
     public static final Integer PAGE_SIZE = 20;
+    public static final String REDIS_USER_TOKEN = "redis_user_token";
     /**
      * 调用支付中心创建订单
      */
@@ -48,6 +57,17 @@ public class BaseController {
             return IMOOCJSONResult.errorMsg("没有订单数据");
         }
         return IMOOCJSONResult.ok(orders);
+    }
+
+
+    public UsersVO createUserToken(Users users){
+        String userTokenUuid = UUID.randomUUID().toString().trim();
+        redisOperator.set(REDIS_USER_TOKEN + ":" + users.getId(), userTokenUuid);
+        //实现用户的redis会话
+        UsersVO usersVO = new UsersVO();
+        BeanUtils.copyProperties(users, usersVO);
+        usersVO.setUserUniqueToken(userTokenUuid);
+        return usersVO;
     }
 
 

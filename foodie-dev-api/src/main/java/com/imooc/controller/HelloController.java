@@ -1,6 +1,5 @@
 package com.imooc.controller;
 
-import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,14 +18,14 @@ public class HelloController {
 
     Logger logger = LoggerFactory.getLogger(HelloController.class);
 
-    @GetMapping(value = "/test")
+    @GetMapping(value = "/hello")
     public Object test(){
         logger.info("info{}", "info的信息");
         logger.warn("warn{}", "warn的信息");
         return "Hello World";
     }
 
-    @GetMapping(value = "/setsession")
+    @GetMapping(value = "/setSession")
     public Object setSession(HttpServletRequest request,
                              HttpServletResponse response){
         HttpSession session = request.getSession();

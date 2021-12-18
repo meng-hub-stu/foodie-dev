@@ -35,6 +35,9 @@ spring:
     multipart:
       max-file-size: 512000 #上传文件的大小
       max-request-size: 512000 #请求的大小
+#     配置spring-session的配置存储类型
+  session:
+    store-type: redis
 ############################################################
 #
 # mybatis 配置

@@ -8,14 +8,12 @@ import com.imooc.service.UserService;
 import com.imooc.utils.*;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isBlank;
@@ -67,8 +65,8 @@ public class PassportController extends BaseController{
         if(users == null){
             return IMOOCJSONResult.errorMsg("用户注册失败");
         }
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(users), true);
-        // TODO 生成token，放在redis中
+
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(createUserToken(users)), true);
         //将用户信息的数据放在redis中
         // 同步购物车数据
         sysShopCart(users.getId(), request, response);
@@ -144,7 +142,7 @@ public class PassportController extends BaseController{
         if(users == null){
             return IMOOCJSONResult.errorMsg("用户不存在");
         }
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(users), true);
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(createUserToken(users)), true);
         sysShopCart(users.getId(), request, response);
         return IMOOCJSONResult.ok(users);
     }
@@ -156,8 +154,11 @@ public class PassportController extends BaseController{
                                   HttpServletResponse response){
         //清空购物车等
         CookieUtils.deleteCookie(request, response, FOODIE_SHOPCART);
+        //清除redis中用户信息
+        redisOperator.del(REDIS_USER_TOKEN + ":" + userId);
         //清空cokile
         CookieUtils.deleteCookie(request, response, "user");
+
         return IMOOCJSONResult.ok();
     }
 

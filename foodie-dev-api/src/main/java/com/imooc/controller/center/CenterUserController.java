@@ -100,10 +100,9 @@ public class CenterUserController extends BaseController {
         String userFaceUrl = fileUploadResource.getFileServerUrl() + uploadPathPrefix
                 + "?t=" + DateUtil.getCurrentDateString(DateUtil.DATE_PATTERN);
         Users users = centerUserService.updateUserFace(userId, userFaceUrl);
-        //更新redis
-        //TODO 以后再说
+        //更新redis会话操作
         //重新设置cookie
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(users), true);
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(createUserToken(users)), true);
         return IMOOCJSONResult.ok();
     }
 
@@ -119,10 +118,10 @@ public class CenterUserController extends BaseController {
         if(result.hasErrors()){
             return IMOOCJSONResult.errorMap(getErrorMap(result));
         }
-        Users usersResult = centerUserService.updateUserInfo(userId, centerUserBO);
+        Users users = centerUserService.updateUserInfo(userId, centerUserBO);
         //将敏感信息进行清空或者等等
-        // TODO 以后会用redis和token等概念
-        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(usersResult), true);
+        // 以后会用redis和token的会话
+        CookieUtils.setCookie(request, response, "user", JsonUtils.objectToJson(createUserToken(users)), true);
         return IMOOCJSONResult.ok();
     }
 
