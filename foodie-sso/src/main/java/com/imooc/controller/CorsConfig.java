@@ -1,4 +1,4 @@
-package com.imooc.config;
+package com.imooc.controller;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,10 +20,6 @@ public class CorsConfig {
         CorsConfiguration config =  new CorsConfiguration();
         config.addAllowedOrigin("http://localhost:8080");
         config.addAllowedOrigin("http://192.168.32.25:8080");
-        config.addAllowedOrigin("http://www.mtv.com");
-        config.addAllowedOrigin("http://www.mtv.com:8080");
-        config.addAllowedOrigin("http://www.music.com");
-        config.addAllowedOrigin("http://www.music.com:8080");
         config.addAllowedOrigin("*");
         //2.设置发送cookie消息
         config.setAllowCredentials(true);

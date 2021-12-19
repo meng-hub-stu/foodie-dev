@@ -8,11 +8,9 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-    <!-- 打包war [1] -->
-   <!-- <packaging>war</packaging>-->
 
-    <artifactId>foodie-dev-api</artifactId>
-<!--    依赖service模块-->
+    <artifactId>foodie-sso</artifactId>
+    <!--    依赖service模块-->
     <dependencies>
         <dependency>
             <groupId>com.imooc</groupId>
@@ -21,11 +19,8 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-
     </dependencies>
-
 
 </project>

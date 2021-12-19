@@ -13,6 +13,7 @@
         <module>foodie-dev-mapper</module>
         <module>foodie-dev-service</module>
         <module>foodie-dev-api</module>
+        <module>foodie-sso</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -183,6 +184,12 @@
             <groupId>com.github.wechatpay-apiv3</groupId>
             <artifactId>wechatpay-apache-httpclient</artifactId>
             <version>0.2.3</version>
+        </dependency>
+        <!--布隆依赖        -->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>28.1-jre</version>
         </dependency>
 
     </dependencies>
