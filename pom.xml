@@ -14,6 +14,8 @@
         <module>foodie-dev-service</module>
         <module>foodie-dev-api</module>
         <module>foodie-sso</module>
+        <module>foodie-dev-es</module>
+        <module>foodie-dev-test</module>
     </modules>
 
     <packaging>pom</packaging>
