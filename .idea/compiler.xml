@@ -16,6 +16,9 @@
         <module name="foodie-dev-service" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="foodie-dev-search" target="1.8" />
+    </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
@@ -24,6 +27,7 @@
       <module name="foodie-dev-es" options="-parameters" />
       <module name="foodie-dev-mapper" options="-parameters" />
       <module name="foodie-dev-pojo" options="-parameters" />
+      <module name="foodie-dev-search" options="-parameters" />
       <module name="foodie-dev-service" options="-parameters" />
       <module name="foodie-dev-test" options="-parameters" />
       <module name="foodie-sso" options="-parameters" />
