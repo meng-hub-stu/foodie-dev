@@ -2,6 +2,7 @@
 <project version="4">
   <component name="CompilerConfiguration">
     <annotationProcessing>
+      <profile default="true" name="Default" enabled="true" />
       <profile name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
@@ -13,10 +14,12 @@
         <module name="foodie-dev-mapper" />
         <module name="foodie-dev-es" />
         <module name="foodie-dev-test" />
+        <module name="foodie-dev-fs" />
         <module name="foodie-dev-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="foodie-dev-mdl" target="1.8" />
       <module name="foodie-dev-search" target="1.8" />
     </bytecodeTargetLevel>
   </component>
@@ -25,6 +28,7 @@
       <module name="foodie-dev-api" options="-parameters" />
       <module name="foodie-dev-common" options="-parameters" />
       <module name="foodie-dev-es" options="-parameters" />
+      <module name="foodie-dev-fs" options="-parameters" />
       <module name="foodie-dev-mapper" options="-parameters" />
       <module name="foodie-dev-pojo" options="-parameters" />
       <module name="foodie-dev-search" options="-parameters" />

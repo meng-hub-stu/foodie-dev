@@ -24,7 +24,7 @@ public class StuController {
     @Autowired
     private StuService stuService;
 
-    @GetMapping(value = "test1")
+    @GetMapping(value = "stu")
     public IMOOCJSONResult test(OrderBO stu){
         System.out.println(stu);
         return IMOOCJSONResult.ok();
