@@ -24,7 +24,8 @@ public class RedissonAutoConfiguration {
     @Bean
     RedissonClient redissonSingle() {
         Config config = new Config();
-        config.useSingleServer().setAddress("redis://127.0.0.1:6379");
+//        config.useSingleServer().setAddress("redis://127.0.0.1:6379");
+        config.useSingleServer().setAddress("redis://192.168.32.97:6379").setPassword("imooc");
         return Redisson.create(config);
     }
 

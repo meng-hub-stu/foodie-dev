@@ -61,7 +61,8 @@ public class CenterUserFaceController extends BaseController{
                     !suffix.equalsIgnoreCase("jpeg") ) {
                 return IMOOCJSONResult.errorMsg("图片格式不正确！");
             }
-            path = faService.upload(file, suffix);
+//            path = faService.upload(file, suffix);
+            path = faService.uploadOSS(file, userId, suffix);
             System.out.println(path);
         } else {
             return IMOOCJSONResult.errorMsg("文件不能为空");
@@ -70,7 +71,9 @@ public class CenterUserFaceController extends BaseController{
             return IMOOCJSONResult.errorMsg("上传失败");
         }
 
-        String userFaceUrl = fileResource.getHost() + path;
+//        String userFaceUrl = fileResource.getHost() + path;
+        //外网访问oss的地址
+        String userFaceUrl = fileResource.getOssHost() + path;
         Users users = centerUserService.updateUserFace(userId, userFaceUrl);
         //更新redis会话操作
         //重新设置cookie
