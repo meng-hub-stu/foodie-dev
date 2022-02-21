@@ -1,7 +1,7 @@
 package com.imooc.controller;
 
-import com.imooc.lock.RedisLockApi;
-import com.imooc.lock.RedisLockApiB;
+import com.imooc.lock.first.RedisLockApi;
+import com.imooc.lock.second.RedisLockApiB;
 import com.imooc.utils.RedisOperator;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;

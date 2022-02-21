@@ -1,4 +1,4 @@
-package com.imooc.lock;
+package com.imooc.lock.first;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

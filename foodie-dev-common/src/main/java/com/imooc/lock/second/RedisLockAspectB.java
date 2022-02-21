@@ -1,4 +1,4 @@
-package com.imooc.lock;
+package com.imooc.lock.second;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -47,7 +47,7 @@ public class RedisLockAspectB {
     @Autowired
     private RedissonClient redissonClient;
 
-    @Pointcut("@annotation(com.imooc.lock.RedisLockApiB)")
+    @Pointcut("@annotation(com.imooc.lock.second.RedisLockApiB)")
     public void lockAspect() {}
 
     @Around("lockAspect()")
@@ -159,6 +159,7 @@ public class RedisLockAspectB {
         MethodSignature signature = (MethodSignature)pJoinPoint.getSignature();
         Method method = signature.getMethod();
         DefaultParameterNameDiscoverer nameDiscoverer = new DefaultParameterNameDiscoverer();
+        //获取该方法的参数名称
         String[] parameterNames = nameDiscoverer.getParameterNames(method);
         if (parameterNames == null || parameterNames.length == 0) {
             //方法没有入参,直接返回注解上的key

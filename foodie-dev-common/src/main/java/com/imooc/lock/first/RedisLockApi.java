@@ -1,4 +1,4 @@
-package com.imooc.lock;
+package com.imooc.lock.first;
 
 import java.lang.annotation.*;
 

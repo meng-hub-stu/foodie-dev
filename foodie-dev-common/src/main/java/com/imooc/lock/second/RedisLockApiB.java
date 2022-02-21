@@ -1,4 +1,4 @@
-package com.imooc.lock;
+package com.imooc.lock.second;
 
 import org.springframework.core.annotation.Order;
 
