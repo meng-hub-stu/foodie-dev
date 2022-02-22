@@ -17,6 +17,8 @@
         <module>foodie-dev-es</module>
         <module>foodie-dev-test</module>
         <module>foodie-dev-fs</module>
+        <module>foodie-dev-jdbc</module>
+        <module>foodie-dev-websocket</module>
     </modules>
 
     <packaging>pom</packaging>
