@@ -2,6 +2,7 @@ package com.imooc.service.impl;
 
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClientBuilder;
+import com.aliyun.oss.model.PutObjectResult;
 import com.github.tobato.fastdfs.domain.fdfs.StorePath;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.imooc.resource.FileResource;
@@ -11,6 +12,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.InputStream;
+
+import static org.apache.commons.lang3.StringUtils.isBlank;
 
 /**
  * @Author Mengdexin
@@ -42,10 +45,15 @@ public class FsServiceImpl implements FsService {
                         fileResource.getAccessKeySecret());
         InputStream inputStream = file.getInputStream();
         // 创建PutObject请求。
-        String fileName = fileResource.getObjectName() + "/" + userId + "/" + userId + "." + fileExtName;
-        ossClient.putObject(fileResource.getBucketName(), fileName, inputStream);
+        String fileName = generateOssKey(userId, fileExtName);
+        PutObjectResult putObjectResult = ossClient.putObject(fileResource.getBucketName(), fileName, inputStream);
+        String ossResult = isBlank(putObjectResult.getETag()) ? "error" : "done";
         ossClient.shutdown();
         return fileName;
+    }
+
+    public String generateOssKey(String userId, String fileExtName) {
+        return fileResource.getObjectName() + "/" + userId + "/" + userId + "." + fileExtName;
     }
 
 }
