@@ -3,14 +3,17 @@ package com.imooc.controller.pay.controller;
 import com.imooc.controller.pay.entity.PaymentInfoVO;
 import com.imooc.controller.pay.entity.wx.PreOrderResult;
 import com.imooc.controller.pay.service.PayOrderService;
+import com.imooc.pojo.Orders;
+import com.imooc.resource.WechatResource;
 import com.imooc.utils.IMOOCJSONResult;
+import com.imooc.utils.RedisOperator;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 /**
  * 调用支付接口
@@ -23,10 +26,20 @@ public class PayController {
 
     @Autowired
     private PayOrderService payOrderService;
+    @Autowired
+    public RedisOperator redis;
+    @Autowired
+    private WechatResource wxPayResource;
+
+    @PostMapping(value = "创建订单")
+    @ApiOperation(value = "创建订单", notes = "创建订单")
+    public IMOOCJSONResult createWechatPay(@RequestBody Map<String, Object> map){
+        return IMOOCJSONResult.ok();
+    }
 
     @PostMapping(value = "createWechatPay")
-    @ApiOperation(value = "调用微信的native支付接口v2版本", notes = "调用微信的native支付接口v2版本", httpMethod = "POST")
-    public IMOOCJSONResult createWechatPay(@RequestParam(value = "merchantUserId") String merchantUserId,
+    @ApiOperation(value = "调用微信获取支付二维码", notes = "调用微信获取支付二维码", httpMethod = "POST")
+    public IMOOCJSONResult getWechatImage(@RequestParam(value = "merchantUserId") String merchantUserId,
                                            @RequestParam(value = "merchantOrderId") String merchantOrderId) throws Exception {
         //订单号
         String out_trade_no = merchantOrderId;
@@ -34,17 +47,41 @@ public class PayController {
         String total_fee = "1";
         //商品的描述
         String body = "天天吃货-付款用户[" + merchantUserId + "]";
-        PreOrderResult preOrderResult = payOrderService.createWechatPay(body, out_trade_no, total_fee);
-        PaymentInfoVO paymentInfoVO = new PaymentInfoVO();
-        paymentInfoVO.setAmount(Integer.valueOf(total_fee));
-        paymentInfoVO.setMerchantOrderId(merchantOrderId);
-        paymentInfoVO.setMerchantUserId(merchantUserId);
-        paymentInfoVO.setQrCodeUrl(preOrderResult.getCode_url());
-        return IMOOCJSONResult.ok(paymentInfoVO);
+        Orders waitPayOrder = new Orders();
+        if (waitPayOrder != null) {
+            String qrCodeUrl = redis.get(wxPayResource.getQrcodeKey() + ":" + merchantOrderId);
+            if (StringUtils.isEmpty(qrCodeUrl)) {
+                // 订单总金额，单位为分
+//                String total_fee = String.valueOf(waitPayOrder.getAmount());
+//				String total_fee = "1";	// 测试用 1分钱
+
+                // 统一下单
+//                PreOrderResult preOrderResult = wxOrderService.placeOrder(body, out_trade_no, total_fee);
+                PreOrderResult preOrderResult = payOrderService.createWechatPay(body, out_trade_no, total_fee);
+                qrCodeUrl = preOrderResult.getCode_url();
+            }
+
+            PaymentInfoVO paymentInfoVO = new PaymentInfoVO();
+//            paymentInfoVO.setAmount(waitPayOrder.getAmount());
+            paymentInfoVO.setMerchantOrderId(merchantOrderId);
+            paymentInfoVO.setMerchantUserId(merchantUserId);
+            paymentInfoVO.setQrCodeUrl(qrCodeUrl);
+            redis.set(wxPayResource.getQrcodeKey() + ":" + merchantOrderId, qrCodeUrl, wxPayResource.getQrcodeExpire());
+            return IMOOCJSONResult.ok(paymentInfoVO);
+        } else {
+            return IMOOCJSONResult.errorMsg("该订单不存在，或已经支付");
+        }
+//        PreOrderResult preOrderResult = payOrderService.createWechatPay(body, out_trade_no, total_fee);
+//        PaymentInfoVO paymentInfoVO = new PaymentInfoVO();
+//        paymentInfoVO.setAmount(Integer.valueOf(total_fee));
+//        paymentInfoVO.setMerchantOrderId(merchantOrderId);
+//        paymentInfoVO.setMerchantUserId(merchantUserId);
+//        paymentInfoVO.setQrCodeUrl(preOrderResult.getCode_url());
+//        return IMOOCJSONResult.ok(paymentInfoVO);
     }
 
     @PostMapping(value = "createAliPay")
-    @ApiOperation(value = "调用阿里的支付接口", notes = "调用阿里的支付接口", httpMethod = "POST")
+    @ApiOperation(value = "调用阿里的支付接口获取二维码", notes = "调用阿里的支付接口获取二维码", httpMethod = "POST")
     public IMOOCJSONResult createAliPay(@ApiParam(value = "用户的id", name = "merchantUserId", required = true)
                                         @RequestParam(value = "merchantUserId") String merchantUserId,
                                         @ApiParam(value = "订单的id", name = "merchantOrderId", required = true)
