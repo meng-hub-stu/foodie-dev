@@ -1,4 +1,4 @@
-package com.imooc.server;
+package com.imooc.websocket;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;

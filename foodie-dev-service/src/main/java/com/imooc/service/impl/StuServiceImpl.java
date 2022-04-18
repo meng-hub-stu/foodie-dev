@@ -6,6 +6,7 @@ import com.imooc.service.StuService;
 import com.imooc.mapper.StuMapper;
 import com.imooc.pojo.Stu;
 import com.imooc.utils.PagedGridResult;
+import org.apache.ibatis.annotations.CacheNamespace;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -18,6 +19,7 @@ import java.util.List;
  * @date 2021 -11 -03 -22:15
  */
 @Service
+//@CacheNamespace
 public class StuServiceImpl implements StuService {
 
     @Autowired
@@ -26,7 +28,9 @@ public class StuServiceImpl implements StuService {
     @Override
     @Transactional(propagation = Propagation.REQUIRED,rollbackFor = Exception.class)
     public Stu getStu(Integer id) {
-        return stuMapper.selectByPrimaryKey(id);
+        Stu stu = stuMapper.selectByPrimaryKey(id);
+        System.out.println(stu);
+        return stu;
     }
 
     @Override

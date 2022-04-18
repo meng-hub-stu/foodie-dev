@@ -5,6 +5,7 @@ import org.springframework.core.annotation.Order;
 import java.lang.annotation.*;
 
 /**
+ * 分布式锁
  * @author Mengdl
  * @date 2022/01/18
  */
