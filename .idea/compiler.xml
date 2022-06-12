@@ -21,6 +21,7 @@
     <bytecodeTargetLevel>
       <module name="foodie-dev-mdl" target="1.8" />
       <module name="foodie-dev-search" target="1.8" />
+      <module name="foodie-rabbitmq" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -34,6 +35,7 @@
       <module name="foodie-dev-search" options="-parameters" />
       <module name="foodie-dev-service" options="-parameters" />
       <module name="foodie-dev-test" options="-parameters" />
+      <module name="foodie-rabbitmq" options="-parameters" />
       <module name="foodie-sso" options="-parameters" />
     </option>
   </component>
