@@ -7,6 +7,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="foodie-dev-sharding" />
         <module name="foodie-dev-common" />
         <module name="foodie-dev-pojo" />
         <module name="foodie-sso" />
@@ -36,6 +37,7 @@
       <module name="foodie-dev-pojo" options="-parameters" />
       <module name="foodie-dev-search" options="-parameters" />
       <module name="foodie-dev-service" options="-parameters" />
+      <module name="foodie-dev-sharding" options="-parameters" />
       <module name="foodie-dev-test" options="-parameters" />
       <module name="foodie-dev-websocket" options="-parameters" />
       <module name="foodie-sso" options="-parameters" />
