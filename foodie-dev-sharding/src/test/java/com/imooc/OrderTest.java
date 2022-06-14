@@ -1,6 +1,7 @@
 package com.imooc;
 
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
+import com.imooc.entity.Order;
 import com.imooc.service.IOrderService;
 import com.sun.javafx.binding.StringFormatter;
 import lombok.AllArgsConstructor;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.xml.bind.SchemaOutputResolver;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -43,6 +45,12 @@ public class OrderTest {
             });
         }
 
+    }
+
+    @Test
+    public void queryOrder(){
+        Order order = orderService.getById(1536622810368782338L);
+        System.out.println(String.format("数据：%s", order));
     }
 
 }

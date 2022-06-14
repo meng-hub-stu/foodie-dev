@@ -1,7 +1,7 @@
 package com.imooc.controller;
 
-import com.imooc.lock.first.RedisLockApi;
-import com.imooc.lock.second.RedisLockApiB;
+import com.imooc.lock.first.RedisLockApiBack;
+import com.imooc.lock.second.RedisLockApi;
 import com.imooc.utils.RedisOperator;
 import io.swagger.annotations.Api;
 import org.slf4j.Logger;
@@ -28,19 +28,19 @@ public class HelloController {
     @Autowired
     private RedisOperator redisOperator;
 
-    @RedisLockApi(methodName = "test1()", expireTime = 100L)
+    @RedisLockApiBack(methodName = "test1()", expireTime = 100L)
     @GetMapping(value = "/test1")
     public void test1() {
         redisOperator.set("ke", "v1");
     }
 
-    @RedisLockApi
+    @RedisLockApiBack
     @GetMapping(value = "/test2")
     public void test2() {
         redisOperator.set("ke2", "v2");
     }
 
-    @RedisLockApiB(lockPrefix = "123", lockParameter = "fundId")
+    @RedisLockApi(lockPrefix = "123", lockParameter = "fundId")
     @GetMapping(value = "/test3")
     public void test3(@RequestParam Long fundId) {
         redisOperator.set("ke2", "v2");

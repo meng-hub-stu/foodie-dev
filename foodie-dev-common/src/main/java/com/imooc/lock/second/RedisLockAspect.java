@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Slf4j
 @Order(10)
-public class RedisLockAspectB {
+public class RedisLockAspect {
     //锁名称
     private static final String LOCK_NAME = "lockName";
     //锁等待时间
@@ -47,7 +47,7 @@ public class RedisLockAspectB {
     @Autowired
     private RedissonClient redissonClient;
 
-    @Pointcut("@annotation(com.imooc.lock.second.RedisLockApiB)")
+    @Pointcut("@annotation(com.imooc.lock.second.RedisLockApi)")
     public void lockAspect() {}
 
     @Around("lockAspect()")
@@ -123,25 +123,25 @@ public class RedisLockAspectB {
         for (Method method : methods) {
             if (method.getName().equals(methodName)) {
                 Map<String, Object> result = new HashMap<String, Object>();
-                RedisLockApiB redisLock = method.getAnnotation(RedisLockApiB.class);
-                if (StringUtils.isNotBlank(redisLock.lockParameter())) {
+                RedisLockApi redisLockApi = method.getAnnotation(RedisLockApi.class);
+                if (StringUtils.isNotBlank(redisLockApi.lockParameter())) {
                     for (int i = 0; i < objs.length; i++) {
-                        if (redisLock.lockParameter().equals(argNames[i])) {
-                            result.put(LOCK_NAME, redisLock.lockPrefix() + objs[i]);
+                        if (redisLockApi.lockParameter().equals(argNames[i])) {
+                            result.put(LOCK_NAME, redisLockApi.lockPrefix() + objs[i]);
                             break;
                         }
 
                     }
                 } else {
-                    result.put(LOCK_NAME, redisLock.lockPrefix());
+                    result.put(LOCK_NAME, redisLockApi.lockPrefix());
                 }
                 //使用el表达式
                 //result.put(LOCK_NAME, redisLock.lockPrefix() + getRedisLockName(proceeding, redisLock.lockParameter()));
 
-                result.put(lOCK_WAIT, redisLock.lockWait());
-                result.put(AUTO_UNLOCK_TIME, redisLock.autoUnlockTime());
-                result.put(RETRY_NUM, redisLock.retryNum());
-                result.put(RETRY_WAIT, redisLock.retryWait());
+                result.put(lOCK_WAIT, redisLockApi.lockWait());
+                result.put(AUTO_UNLOCK_TIME, redisLockApi.autoUnlockTime());
+                result.put(RETRY_NUM, redisLockApi.retryNum());
+                result.put(RETRY_WAIT, redisLockApi.retryWait());
 
                 return result;
             }

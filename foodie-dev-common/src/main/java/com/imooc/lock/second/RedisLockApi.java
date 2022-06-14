@@ -13,7 +13,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Documented
 @Order(value = 10)
-public @interface RedisLockApiB {
+public @interface RedisLockApi {
     // 锁前缀
     String lockPrefix() default "";
 

@@ -23,11 +23,11 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @RequiredArgsConstructor
 @Order(10)
-public class RedisLockAspect {
+public class RedisLockAspectBack {
 
     private final HttpServletRequest request;
 
-    private final RedisLock redisLock;
+    private final RedisLockBack redisLockBack;
 
 //    @Pointcut("@annotation(com.imooc.lock.RedisLockAnn)")
 //    public void redisLockAnnotation(){
@@ -37,29 +37,29 @@ public class RedisLockAspect {
 //    public void redisLockAnnotation(RedisLockAnn redisLockAnn){
 //    }
 
-    @Around("@annotation(redisLockApi)")
-    public Object methodsAnnotationWithRedisLock(final ProceedingJoinPoint point, RedisLockApi redisLockApi) throws Throwable {
+    @Around("@annotation(redisLockApiBack)")
+    public Object methodsAnnotationWithRedisLock(final ProceedingJoinPoint point, RedisLockApiBack redisLockApiBack) throws Throwable {
         Object re = null;
         //获取方法名称
         String key = point.getSignature().getName();
         //获取设置的锁时间
-        long expireTime = redisLockApi.expireTime();
-        if (!"".equals(redisLockApi.methodName())) {
-            key = redisLockApi.methodName();
+        long expireTime = redisLockApiBack.expireTime();
+        if (!"".equals(redisLockApiBack.methodName())) {
+            key = redisLockApiBack.methodName();
         }
         try {
             //加锁
-            if (redisLock.lock("", key, expireTime)) {
+            if (redisLockBack.lock("", key, expireTime)) {
                 //执行方法
                 re = point.proceed();
                 //释放锁
-                redisLock.unlock("", key);
+                redisLockBack.unlock("", key);
             }
         } catch (Exception e) {
             log.error("redis锁" + e.getMessage());
         } finally {
             //最后都要释放锁
-            redisLock.unlock("", key);
+            redisLockBack.unlock("", key);
         }
         return  re;
     }

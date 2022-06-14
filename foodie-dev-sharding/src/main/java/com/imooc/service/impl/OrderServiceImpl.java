@@ -4,13 +4,12 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.entity.Order;
 import com.imooc.entity.OrderItem;
 import com.imooc.entity.Product;
-import com.imooc.lock.second.RedisLockApiB;
+import com.imooc.lock.second.RedisLockApi;
 import com.imooc.mapper.OrderItemMapper;
 import com.imooc.mapper.OrderMapper;
 import com.imooc.mapper.ProductMapper;
 import com.imooc.service.IOrderService;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +34,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    @RedisLockApiB(lockPrefix = "order")
+    @RedisLockApi(lockPrefix = "order")
     public boolean createOrder() {
         //1.查询产品的数量
         Product product = productMapper.selectById(PRODUCT_ID);

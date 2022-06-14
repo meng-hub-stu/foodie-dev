@@ -16,7 +16,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class RedisLock {
+public class RedisLockBack {
 
     private final StringRedisTemplate redisTemplate;
     private static final Long expire = 5000L;
