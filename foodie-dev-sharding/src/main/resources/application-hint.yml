@@ -1,0 +1,50 @@
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+  shardingsphere:
+    props:
+      sql:
+        show: true
+    datasource:
+      names: ds1,ds2,ds3
+      ds1:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/study?serverTimezone=GMT%2B8
+        username: root
+        password: root
+      ds2:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/study_copy?serverTimezone=GMT%2B8
+        username: root
+        password: root
+      ds3:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/study_copy_02?serverTimezone=GMT%2B8
+        username: root
+        password: root
+
+
+    sharding:
+      default-data-source-name: ds1
+      tables:
+        user:
+          actual-data-nodes: ds$->{1..2}.user$->{1..2}
+          key-generator:
+            column: id
+            type: SNOWFLAKE
+          table-strategy:
+            standard:
+              sharding-column: id
+#              precise-algorithm-class-name: com.imooc.shard.MyTablePreciseShardingAlgorithm
+              range-algorithm-class-name: com.imooc.shard.MyTableRangeShardingAlgorithm
+  #          hint:
+  #            algorithm-class-name: com.agefades.demo.algorithm.HintTableAlgorithm
+          database-strategy:
+            standard:
+              sharding-column: user_id
+#              precise-algorithm-class-name: com.imooc.shard.MyDBPreciseShardingAlgorithm
+              range-algorithm-class-name: com.imooc.shard.MyDBRangeShardingAlgorithm

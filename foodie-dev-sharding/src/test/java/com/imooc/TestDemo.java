@@ -54,7 +54,7 @@ public class TestDemo {
             User user = new User();
             user.setName("yue");
             user.setUserId(i+100);
-            hintRule();
+//            hintRule();
             userMapper.insert(user);
         }
     }
