@@ -26,7 +26,7 @@ import java.util.List;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @Slf4j
-public class TestDemo {
+public class ShardTest {
 
     @Autowired
     private IStuUserService userService;
@@ -43,7 +43,7 @@ public class TestDemo {
     @Test
     public void testMybatisPlus (){
         StuUser stuUser = new StuUser();
-        stuUser.setUserName("张三");
+        stuUser.setUserName("孟德鑫");
         boolean b = userService.saveOrUpdate(stuUser);
         System.out.println(b);
     }

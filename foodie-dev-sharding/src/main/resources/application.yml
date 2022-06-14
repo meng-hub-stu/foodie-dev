@@ -18,3 +18,12 @@ spring:
 #    username: root
 #    password: root
 #    type: com.alibaba.druid.pool.DruidDataSource
+
+
+
+# redis配置
+#  redis:
+#    #   单机模式
+#    database: 1
+#    #    password: imooc
+#    host: 127.0.0.1
