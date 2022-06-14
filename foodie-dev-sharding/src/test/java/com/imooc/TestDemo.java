@@ -63,7 +63,8 @@ public class TestDemo {
     public void search(){
         QueryWrapper<User> wrapper = new QueryWrapper<>();
 //        wrapper.eq("user_id",100);
-        wrapper.eq("user_id",103);
+//        wrapper.eq("user_id",103);
+        wrapper.in("user_id", 109, 111, 161, 165, 156, 158, 132, 134);
         wrapper.orderByDesc("user_id");
         List<User> list = userMapper.selectList(wrapper);
         for (User user:list){
