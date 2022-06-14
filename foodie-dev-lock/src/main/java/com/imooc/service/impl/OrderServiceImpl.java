@@ -1,0 +1,71 @@
+package com.imooc.service.impl;
+
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.imooc.entity.Order;
+import com.imooc.entity.OrderItem;
+import com.imooc.entity.Product;
+import com.imooc.exception.MessageRunTimeException;
+import com.imooc.lock.second.RedisLockApi;
+import com.imooc.mapper.OrderItemMapper;
+import com.imooc.mapper.OrderMapper;
+import com.imooc.mapper.ProductMapper;
+import com.imooc.service.IOrderService;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+
+/**
+ * @Author mengdexin
+ * @Date 2022:06:13:23:25
+ **/
+@Service
+@AllArgsConstructor
+public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements IOrderService {
+
+    private final OrderItemMapper orderItemMapper;
+
+    private final ProductMapper productMapper;
+
+    private static final Long PRODUCT_ID = 123L;
+
+    private static final Integer count = 1;
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+    @RedisLockApi(lockPrefix = "order")
+    public boolean createOrder() {
+        //1.查询产品的数量
+        Product product = productMapper.selectById(PRODUCT_ID);
+        if (count > product.getCount()) {
+            throw new MessageRunTimeException("库存不够");
+        }
+        //2.进行减库存
+        product.setCount(product.getCount() - count);
+        //3.更新产品的数据
+        productMapper.updateById(product);
+        //4.更定订单的数据
+        Date date = new Date();
+        Order order = Order.builder()
+                .address("北京市顺义区")
+                .totalPrice(product.getPrice())
+                .build();
+        order.setCreateTime(date);
+        order.setUpdateTime(date);
+        baseMapper.insert(order);
+        OrderItem orderItem = OrderItem.builder()
+                .orderId(order.getId())
+                .count(count)
+                .productId(PRODUCT_ID)
+                .price(product.getPrice())
+                .build();
+        orderItem.setCreateTime(date);
+        orderItem.setUpdateTime(date);
+        orderItemMapper.insert(orderItem);
+        return true;
+    }
+
+
+}

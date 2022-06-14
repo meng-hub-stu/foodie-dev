@@ -1,4 +1,4 @@
-package com.imooc.lock;
+package com.imooc.lock.second;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Slf4j
 @Order(10)
-public class RedisLockAspectB {
+public class RedisLockAspect {
     //锁名称
     private static final String LOCK_NAME = "lockName";
     //锁等待时间
@@ -47,7 +47,7 @@ public class RedisLockAspectB {
     @Autowired
     private RedissonClient redissonClient;
 
-    @Pointcut("@annotation(com.imooc.lock.RedisLockApiB)")
+    @Pointcut("@annotation(com.imooc.lock.second.RedisLockApi)")
     public void lockAspect() {}
 
     @Around("lockAspect()")
@@ -123,7 +123,7 @@ public class RedisLockAspectB {
         for (Method method : methods) {
             if (method.getName().equals(methodName)) {
                 Map<String, Object> result = new HashMap<String, Object>();
-                RedisLockApiB redisLock = method.getAnnotation(RedisLockApiB.class);
+                RedisLockApi redisLock = method.getAnnotation(RedisLockApi.class);
                 if (StringUtils.isNotBlank(redisLock.lockParameter())) {
                     for (int i = 0; i < objs.length; i++) {
                         if (redisLock.lockParameter().equals(argNames[i])) {

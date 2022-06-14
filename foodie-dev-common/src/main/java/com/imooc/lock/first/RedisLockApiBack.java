@@ -1,4 +1,4 @@
-package com.imooc.lock;
+package com.imooc.lock.first;
 
 import java.lang.annotation.*;
 
@@ -10,7 +10,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 @Documented
-public @interface RedisLockApi {
+public @interface RedisLockApiBack {
     /**
      * 方法名称
      * @return

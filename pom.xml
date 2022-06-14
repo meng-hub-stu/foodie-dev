@@ -17,6 +17,7 @@
         <module>foodie-dev-es</module>
         <module>foodie-dev-test</module>
         <module>foodie-dev-fs</module>
+        <module>foodie-dev-lock</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -52,6 +53,10 @@
                     <groupId>org.springframework.boot</groupId>
                 </exclusion>
             </exclusions>-->
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -218,7 +223,35 @@
             <version>1.1.46.sec01</version>
         </dependency>
 
-    </dependencies>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid</artifactId>
+            <version>1.2.6</version>
+        </dependency>
 
+        <dependency>
+            <groupId>org.redisson</groupId>
+            <artifactId>redisson-spring-boot-starter</artifactId>
+            <version>3.15.4</version>
+        </dependency>
+
+    </dependencies>
+    <build>
+        <resources>
+            <resource>
+                <directory>${basedir}/src/main/resources</directory>
+                <includes>
+                    <include>**/*.*</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+    </build>
 
 </project>

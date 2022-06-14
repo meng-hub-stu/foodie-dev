@@ -15,6 +15,7 @@
         <module name="foodie-dev-es" />
         <module name="foodie-dev-test" />
         <module name="foodie-dev-fs" />
+        <module name="foodie-dev-lock" />
         <module name="foodie-dev-service" />
       </profile>
     </annotationProcessing>
@@ -30,6 +31,7 @@
       <module name="foodie-dev-common" options="-parameters" />
       <module name="foodie-dev-es" options="-parameters" />
       <module name="foodie-dev-fs" options="-parameters" />
+      <module name="foodie-dev-lock" options="-parameters" />
       <module name="foodie-dev-mapper" options="-parameters" />
       <module name="foodie-dev-pojo" options="-parameters" />
       <module name="foodie-dev-search" options="-parameters" />

@@ -1,4 +1,4 @@
-package com.imooc.lock;
+package com.imooc.lock.first;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,7 +16,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class RedisLock {
+public class RedisLockBack {
 
     private final StringRedisTemplate redisTemplate;
     private static final Long expire = 5000L;

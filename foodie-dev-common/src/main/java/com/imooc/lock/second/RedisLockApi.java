@@ -1,4 +1,4 @@
-package com.imooc.lock;
+package com.imooc.lock.second;
 
 import org.springframework.core.annotation.Order;
 
@@ -12,7 +12,7 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD})
 @Documented
 @Order(value = 10)
-public @interface RedisLockApiB {
+public @interface RedisLockApi {
     // 锁前缀
     String lockPrefix() default "";
 
