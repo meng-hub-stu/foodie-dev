@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.entity.Order;
 import com.imooc.entity.OrderItem;
 import com.imooc.entity.Product;
+import com.imooc.exception.ServiceRunTimeException;
 import com.imooc.lock.second.RedisLockApi;
 import com.imooc.mapper.OrderItemMapper;
 import com.imooc.mapper.OrderMapper;
@@ -39,7 +40,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         //1.查询产品的数量
         Product product = productMapper.selectById(PRODUCT_ID);
         if (count > product.getCount()) {
-            throw new RuntimeException("库存不够");
+            throw new ServiceRunTimeException("库存不够");
         }
         //2.进行减库存
         product.setCount(product.getCount() - count);

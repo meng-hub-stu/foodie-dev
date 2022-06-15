@@ -7,18 +7,18 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="foodie-dev-sharding" />
-        <module name="foodie-dev-common" />
         <module name="foodie-dev-pojo" />
-        <module name="foodie-sso" />
         <module name="foodie-dev-api" />
         <module name="foodie-dev-mapper" />
         <module name="foodie-dev-es" />
+        <module name="foodie-dev-sharding" />
+        <module name="foodie-dev-fs" />
+        <module name="foodie-dev-service" />
+        <module name="foodie-dev-jdbc" />
+        <module name="foodie-dev-common" />
         <module name="foodie-dev-test" />
         <module name="foodie-dev-websocket" />
-        <module name="foodie-dev-fs" />
-        <module name="foodie-dev-jdbc" />
-        <module name="foodie-dev-service" />
+        <module name="foodie-sso" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
