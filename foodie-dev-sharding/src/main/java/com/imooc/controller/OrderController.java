@@ -1,6 +1,7 @@
 package com.imooc.controller;
 
 import com.imooc.service.IOrderService;
+import com.imooc.utils.IMOOCJSONResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -25,14 +26,20 @@ public class OrderController {
 
     private final IOrderService orderService;
 
-    @PostMapping(value = "create")
-    @ApiModelProperty(value = "创建订单", notes = "无条件")
-    public boolean createOrder(){
+    @PostMapping(value = "threadOrder")
+    @ApiModelProperty(value = "模拟多线程创建订单", notes = "无条件")
+    public boolean createThreadOrder(){
         ExecutorService executorService = Executors.newFixedThreadPool(5);
         for (int i = 0; i < 5; i++) {
             executorService.execute(orderService::createOrder);
         }
         return true;
+    }
+    @PostMapping(value = "singleOrder")
+    @ApiModelProperty(value = "模拟单线程创建订单", notes = "无条件")
+    public IMOOCJSONResult createSingleOrder(){
+        orderService.createOrder();
+        return IMOOCJSONResult.ok(true);
     }
 
 }

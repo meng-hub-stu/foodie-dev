@@ -2,9 +2,11 @@ package com.imooc.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imooc.entity.StuUser;
 import com.imooc.entity.query.StuUserQuery;
 import com.imooc.service.IStuUserService;
+import com.imooc.utils.IMOOCJSONResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
@@ -26,26 +28,27 @@ public class UserController {
 
     @GetMapping(value = "list")
     @ApiOperation(value = "查询列表数据", notes = "无条件")
-    public Object queryUserList(){
-        return stuUserService.list();
+    public IMOOCJSONResult queryUserList(){
+        return IMOOCJSONResult.ok(stuUserService.list());
     }
 
     @GetMapping(value = "page")
     @ApiOperation(value = "分页查询数据", notes = "条件")
-    public IPage<StuUser> getInfoListPage(StuUserQuery query){
-        return stuUserService.page(query.getPage(OrderItem.desc("create_time")), query.wrapperQuery());
+    public IMOOCJSONResult getInfoListPage(StuUserQuery query){
+        IPage<StuUser> result = stuUserService.page(query.getPage(OrderItem.desc("create_time")), query.wrapperQuery());
+        return IMOOCJSONResult.ok(result);
     }
 
     @PostMapping(value = "add")
     @ApiOperation(value = "添加信息的数据", notes = "用户信息")
-    public boolean add(@RequestBody StuUser stuUser){
-        return stuUserService.saveOrUpdate(stuUser);
+    public IMOOCJSONResult add(@RequestBody StuUser stuUser){
+        return IMOOCJSONResult.ok(stuUserService.saveOrUpdate(stuUser));
     }
 
     @GetMapping(value = "detail")
     @ApiOperation(value = "查看详情", notes = "id")
-    public StuUser detail(@RequestParam @Positive long id){
-        return stuUserService.getById(id);
+    public IMOOCJSONResult detail(@RequestParam @Positive long id){
+        return IMOOCJSONResult.ok(stuUserService.getById(id));
     }
 
 }

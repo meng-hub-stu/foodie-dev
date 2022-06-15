@@ -22,8 +22,8 @@ spring:
 
 
 # redis配置
-#  redis:
-#    #   单机模式
-#    database: 1
-#    #    password: imooc
-#    host: 127.0.0.1
+  redis:
+    #   单机模式
+    database: 1
+    #    password: imooc
+    host: 127.0.0.1
