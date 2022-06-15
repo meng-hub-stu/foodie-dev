@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.management.ThreadInfo;
 import java.util.Date;
 
 /**
@@ -36,9 +37,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     @RedisLockApi(lockPrefix = "order")
-    public boolean createOrder() {
+    public /*synchronized*/ boolean createOrder() {
         //1.查询产品的数量
         Product product = productMapper.selectById(PRODUCT_ID);
+        System.out.println(String.format("当前线程名称：%s,当前库存数：%s",Thread.currentThread().getName(), product.getCount()));
         if (count > product.getCount()) {
             throw new ServiceRunTimeException("库存不够");
         }
