@@ -28,12 +28,12 @@ public class OrderController {
 
     @PostMapping(value = "threadOrder")
     @ApiModelProperty(value = "模拟多线程创建订单", notes = "无条件")
-    public boolean createThreadOrder(){
+    public IMOOCJSONResult createThreadOrder(){
         ExecutorService executorService = Executors.newFixedThreadPool(5);
         for (int i = 0; i < 5; i++) {
             executorService.execute(orderService::createOrder);
         }
-        return true;
+        return IMOOCJSONResult.ok();
     }
     @PostMapping(value = "singleOrder")
     @ApiModelProperty(value = "模拟单线程创建订单", notes = "无条件")
