@@ -4,6 +4,8 @@ import org.springframework.core.annotation.Order;
 
 import java.lang.annotation.*;
 
+import static com.imooc.lock.second.LockModel._REENTRANT;
+
 /**
  * 分布式锁
  * @author Mengdl
@@ -14,22 +16,46 @@ import java.lang.annotation.*;
 @Documented
 @Order(value = 10)
 public @interface RedisLockApi {
-    // 锁前缀
+    /**
+     * 锁前缀 为空则取类名加方法名的拼接
+     * @return keys值前缀
+     */
     String lockPrefix() default "";
 
-    // 方法参数名（用于取参数名的值与锁前缀拼接成锁名），尽量不要用对象map等，对象会toString后与锁前缀拼接
+    /**
+     * el表达式
+     * @return el的keys值值
+     */
     String lockParameter() default "";
 
-    // 尝试加锁，最多等待时间（毫秒）
+    /**
+     * 加锁时间(毫秒)
+     * @return 锁时间
+     */
     long lockWait() default 3000L;
 
-    // 自动解锁时间 （毫秒）
+    /**
+     * 自动解锁时间 （毫秒）
+     * @return 默认10000毫秒
+     */
     long autoUnlockTime() default 10000L;
 
-    // 重试次数
+    /**
+     * 重试次数
+     * @return 默认0次
+     */
     int retryNum() default 0;
 
-    // 重试等待时间 （毫秒）
+    /**
+     * 重试等待时间
+     * @return 默认500毫秒
+     */
     long retryWait() default 500L;
+
+    /**
+     * 获取锁的类型
+     * @return 默认是可重入锁
+     */
+    LockModel lockModel() default _REENTRANT;
 
 }

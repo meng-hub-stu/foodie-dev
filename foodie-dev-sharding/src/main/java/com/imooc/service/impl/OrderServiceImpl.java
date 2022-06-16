@@ -15,8 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.lang.management.ThreadInfo;
 import java.util.Date;
+
+import static com.imooc.lock.second.LockModel.*;
 
 /**
  * @author Mengdl
@@ -36,7 +37,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    @RedisLockApi(lockPrefix = "order")
+    @RedisLockApi(lockPrefix = "order", lockParameter = "#order.address+\":\"+#i+\":\"+#order.totalPrice")
     public /*synchronized*/ boolean createOrder() {
         //1.查询产品的数量
         Product product = productMapper.selectById(PRODUCT_ID);
@@ -67,6 +68,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         orderItem.setUpdateTime(date);
         orderItemMapper.insert(orderItem);
         return true;
+    }
+
+    @Override
+//    @RedisLockApi(lockPrefix = "order", lockParameter = "#order.address+\":\"+#i+\":\"+#order.totalPrice", lockModel = _RED_LOCK)
+    @RedisLockApi(lockPrefix = "order")
+    public boolean createOrderByThread(Order order, int i) {
+        return false;
     }
 
 }
