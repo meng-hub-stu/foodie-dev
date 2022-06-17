@@ -1,9 +1,10 @@
 package com.imooc.controller;
 
-//import com.imooc.repeat.RedisRepeat;
+import com.imooc.repeat.RedisRepeat;
 import com.imooc.service.IOrderService;
-//import com.imooc.utils.IMOOCJSONResult;
+import com.imooc.utils.IMOOCJSONResult;
 import com.mengdx.annotation.RateLimiter;
+import com.mengdx.annotation.RedisLock;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -29,29 +30,27 @@ public class OrderController {
 
     @PostMapping(value = "threadOrder")
     @ApiModelProperty(value = "模拟多线程创建订单", notes = "无条件")
-    public boolean createThreadOrder(){
+    public IMOOCJSONResult createThreadOrder(){
         ExecutorService executorService = Executors.newFixedThreadPool(5);
         for (int i = 0; i < 5; i++) {
             executorService.execute(orderService::createOrder);
         }
-//        return IMOOCJSONResult.ok();
-        return true;
+        return IMOOCJSONResult.ok();
     }
     @PostMapping(value = "singleOrder")
     @ApiModelProperty(value = "模拟单线程创建订单", notes = "无条件")
-    public boolean createSingleOrder(){
+    public IMOOCJSONResult createSingleOrder(){
         orderService.createOrder();
-//        return IMOOCJSONResult.ok(true);
-        return true;
+        return IMOOCJSONResult.ok(true);
     }
 
     @PostMapping(value = "limiter")
     @ApiModelProperty(value = "限流", notes = "限流")
     @RateLimiter(timeout = 5L)
 //    @RedisRepeat(timeout = 5L)
-    public boolean limiter(){
-//        return IMOOCJSONResult.ok(true);
-        return true;
+    @RedisLock(lockPrefix = "order")
+    public IMOOCJSONResult limiter(){
+        return IMOOCJSONResult.ok(true);
     }
 
 }
