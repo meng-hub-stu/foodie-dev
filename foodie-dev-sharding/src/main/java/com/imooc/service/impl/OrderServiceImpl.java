@@ -4,12 +4,14 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.imooc.entity.Order;
 import com.imooc.entity.OrderItem;
 import com.imooc.entity.Product;
-import com.imooc.exception.ServiceRunTimeException;
-import com.imooc.lock.second.RedisLockApi;
+//import com.imooc.exception.ServiceRunTimeException;
+//import com.imooc.lock.second.RedisLockApi;
 import com.imooc.mapper.OrderItemMapper;
 import com.imooc.mapper.OrderMapper;
 import com.imooc.mapper.ProductMapper;
 import com.imooc.service.IOrderService;
+import com.mengdx.annotation.RateLimiter;
+import com.mengdx.annotation.RedisLock;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -17,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
-import static com.imooc.lock.second.LockModel.*;
+//import static com.imooc.lock.second.LockModel.*;
 
 /**
  * @author Mengdl
@@ -37,13 +39,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
-    @RedisLockApi(lockPrefix = "order", lockParameter = "#order.address+\":\"+#i+\":\"+#order.totalPrice")
+//    @RedisLockApi(lockPrefix = "order", lockParameter = "#order.address+\":\"+#i+\":\"+#order.totalPrice")
+    @RedisLock(lockPrefix = "order", lockParameter = "#order.address+\":\"+#i+\":\"+#order.totalPrice")
+    @RateLimiter(timeout = 5L)
     public /*synchronized*/ boolean createOrder() {
         //1.查询产品的数量
         Product product = productMapper.selectById(PRODUCT_ID);
         System.out.println(String.format("当前线程名称：%s,当前库存数：%s",Thread.currentThread().getName(), product.getCount()));
         if (count > product.getCount()) {
-            throw new ServiceRunTimeException("库存不够");
+            throw new RuntimeException("库存不够");
+
         }
         //2.进行减库存
         product.setCount(product.getCount() - count);
@@ -72,7 +77,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
 //    @RedisLockApi(lockPrefix = "order", lockParameter = "#order.address+\":\"+#i+\":\"+#order.totalPrice", lockModel = _RED_LOCK)
-    @RedisLockApi(lockPrefix = "order")
+//    @RedisLockApi(lockPrefix = "order")
     public boolean createOrderByThread(Order order, int i) {
         return false;
     }
