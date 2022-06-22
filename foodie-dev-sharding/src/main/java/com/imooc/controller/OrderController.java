@@ -1,6 +1,5 @@
 package com.imooc.controller;
 
-import com.imooc.repeat.RedisRepeat;
 import com.imooc.service.IOrderService;
 import com.imooc.utils.IMOOCJSONResult;
 import com.mengdx.annotation.RateLimiter;
@@ -47,7 +46,6 @@ public class OrderController {
     @PostMapping(value = "limiter")
     @ApiModelProperty(value = "限流", notes = "限流")
     @RateLimiter(timeout = 5L)
-//    @RedisRepeat(timeout = 5L)
     @RedisLock(lockPrefix = "order")
     public IMOOCJSONResult limiter(){
         return IMOOCJSONResult.ok(true);

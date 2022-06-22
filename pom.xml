@@ -20,6 +20,7 @@
         <module>foodie-dev-jdbc</module>
         <module>foodie-dev-websocket</module>
         <module>foodie-dev-sharding</module>
+        <module>foodie-dev-redis</module>
     </modules>
 
     <packaging>pom</packaging>

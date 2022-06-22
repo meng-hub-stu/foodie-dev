@@ -74,6 +74,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Override
     @RedisLock(lockPrefix = "order", lockParameter = "#order.address+\":\"+#i+\":\"+#order.totalPrice", lockModel = _RED_LOCK)
+    @RateLimiter
     public boolean createOrderByThread(Order order, int i) {
         return false;
     }

@@ -1,6 +1,6 @@
 package com.imooc.controller;
 
-import com.imooc.lock.first.RedisLockApiBack;
+import com.imooc.lock.RedisLockApiBack;
 import com.imooc.lock.second.RedisLockApi;
 import com.imooc.utils.RedisOperator;
 import io.swagger.annotations.Api;
