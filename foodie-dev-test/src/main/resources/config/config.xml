@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<config>
+    <!--className是包名+类名-->
+    <className>com.imooc.designmode.build.factory.DatabaseLogFactory</className>
+
+</config>

@@ -1,0 +1,58 @@
+spring:
+  main:
+    # 允许 bean 定义覆盖
+    allow-bean-definition-overriding: true
+
+  # 分库分表配置
+  shardingsphere:
+    # 属性项配置
+    props:
+      sql:
+        # 打印SQL
+        show: true
+    #数据源配置
+    datasource:
+      names: credentials,no-credentials,specify-3
+      # 持证库
+      credentials:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/credentials?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false&serverTimezone=UTC
+        password: root
+        username: root
+      # 非持证库
+      no-credentials:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/no_credentials?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false&serverTimezone=UTC
+        password: root
+        username: root
+      # 指定隔离库
+      specify-3:
+        type: com.zaxxer.hikari.HikariDataSource
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        jdbc-url: jdbc:mysql://localhost:3306/specify_3?useUnicode=true&characterEncoding=utf8&allowMultiQueries=true&useSSL=false&serverTimezone=UTC
+        password: root
+        username: root
+    #分库分表的配置
+    sharding:
+      # 默认数据源
+      default-data-source-name: credentials
+      # 广播表
+      broadcast-tables: tenant
+      # 默认分库策略
+      default-database-strategy:
+        hint:
+          # 强制路由规则实现类
+          algorithm-class-name: com.agefades.demo.algorithm.HintDsAlgorithm
+      # 分表规则
+      tables:
+        # 针对 tenant_policy 表的分片规则
+        tenant_policy:
+          # 真实数据节点,采用Groovy表达式
+          actual-data-nodes: ${['credentials','no-credentials','specify-3']}.tenant_policy
+    #          # 分库策略
+    #          database-strategy:
+    #            hint:
+    #              # 分片算法
+    #              algorithm-class-name: com.agefades.demo.algorithm.HintDsAlgorithm
